@@ -8,6 +8,7 @@ function App() {
       <div className="top-bar">
         <h1>Rapid React Task Manager</h1>
       </div>
+      <Board />
     </div>
   );
 }
