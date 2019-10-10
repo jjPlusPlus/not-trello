@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import RemoveButton from './buttons/RemoveButton';
 import MoveButton from './buttons/MoveButton';
@@ -6,20 +6,15 @@ import MoveButton from './buttons/MoveButton';
 import { connect } from 'react-redux';
 import { removeCard } from '../actions';
 
-class Card extends Component {
-
-  render() {
-    const { card } = this.props;
-    return (
-      <div className="card">
-        <h3 className="card--title">{card.name}</h3>
-        <RemoveButton />
-        <p className="card-shortdescription">{card.shortdescription}</p>
-        <MoveButton direction="left" />
-        <MoveButton direction="right" />
-      </div>
-    )
-  }
+function Card(props) {
+  const { card } = props;
+  return <div className="card">
+    <h3 className="card--title">{card.name}</h3>
+    <RemoveButton />
+    <p className="card-shortdescription">{card.shortdescription}</p>
+    <MoveButton direction="left" />
+    <MoveButton direction="right" />
+  </div>
 }
 
 // passing the entire state

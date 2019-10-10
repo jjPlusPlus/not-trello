@@ -1,12 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-class AddButton extends Component {
-  render() {
-    return (
-      <button className="add-button">Add +</button>
-    )
-  }
+function AddButton(props) {
+  return <button className="add-button">Add +</button>
 }
 
 AddButton.propTypes = {
