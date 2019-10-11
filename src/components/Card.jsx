@@ -10,7 +10,7 @@ function Card(props) {
   const { card } = props;
   return <div className="card">
     <h3 className="card--title">{card.name}</h3>
-    <RemoveButton />
+    <RemoveButton action={() => props.removeCard(card)}/>
     <p className="card-shortdescription">{card.shortdescription}</p>
     <MoveButton direction="left" />
     <MoveButton direction="right" />

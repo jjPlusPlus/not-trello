@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function MoveButton(props) {
   const { direction } = props;
-  return <button className="moveButton">Move {direction}</button>
+  return <button className="moveButton" onClick={() => props.action()}>Move {direction}</button>
 }
 
 MoveButton.propTypes = {
