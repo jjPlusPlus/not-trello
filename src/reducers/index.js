@@ -1,11 +1,12 @@
-export default function(state = {}, action) {
+import uuid from 'uuid';
+
+export default function(state = { cards: [], columns: [] }, action) {
   switch (action.type) {
     /* Cards */
     case "ADD_CARD": {
       const { column } = action.payload;
-      const newID = Date.now();
       const newCard = {
-        id: newID,
+        id: uuid(),
         name: "New Task",
         shortdescription: "A new task about doing something",
         content: "Markdown content goes here",
@@ -13,24 +14,10 @@ export default function(state = {}, action) {
       };
       return {
         ...state,
-        cards: {
+        cards: [
           ...state.cards,
-          [newID]: {
-            id: newID,
-            name: "New Task",
-            column: column
-          }
-        },
-        columns: {
-          ...state.columns,
-          [column]: {
-            title: state.columns[column].title,
-            cards: [
-              ...state.columns[column].cards,
-              newCard
-            ]
-          }
-        }
+          newCard
+        ]
       };
     }
     case "MOVE_CARD": {
@@ -51,25 +38,24 @@ export default function(state = {}, action) {
       const { id } = action.payload;
       return {
         ...state,
-
+        cards: state.cards.filter(card => card.id !== id)
       };
     }
 
     /* Columns */
     case "ADD_COLUMN": {
-      console.log('add column');
       const { card, column } = action.payload;
-      const newID = Date.now(); // sort-of unique, can be fooled
 
       return {
         ...state,
-        columns: {
+        columns: [
           ...state.columns,
-          [newID]: {
+          {
+            id: uuid(),
             title: "newColumn",
             cards: []
           }
-        }
+        ]
       };
     }
     case "MOVE_COLUMN": {
@@ -90,7 +76,8 @@ export default function(state = {}, action) {
       const { id } = action.payload;
       return {
         ...state,
-
+        cards: state.cards.filter(card => card.column !== id),
+        columns: state.columns.filter(column => column.id !== id)
       };
     }
     default:
