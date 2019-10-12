@@ -25,9 +25,9 @@ export const removeColumn = (id) => ({
   type: "REMOVE_COLUMN",
   payload: id
 })
-export const moveColumn = (id, direction) => ({
+export const moveColumn = (column, direction) => ({
   type: "MOVE_COLUMN",
-  payload: { id: id, direction: direction }
+  payload: { column: column, direction: direction }
 })
 export const updateColumn = (id, column) => ({
   type: "UPDATE_COLUMN",
