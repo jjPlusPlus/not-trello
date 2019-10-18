@@ -83,24 +83,57 @@ export default function(state = { cards: [], columns: [] }, action) {
     case "ADD_COLUMN": {
       const { card, column } = action.payload;
 
+      // new columns will always have an index that is current column length + 1
       return {
         ...state,
         columns: [
           ...state.columns,
           {
             id: uuid(),
-            title: "newColumn",
-            cards: []
+            order: state.columns.length + 1,
+            title: "newColumn"
           }
         ]
       };
     }
     case "MOVE_COLUMN": {
-      const { id, direction } = action.payload;
-      return {
-        ...state,
+      const { column, direction } = action.payload;
+      /*  invalid if this is the first column and a user wants to move it left
+          or this is the last column and a user wants to move it right
+      */
+      const isValid = direction === "left" && column.order > 1 || direction === "right" && column.order < state.columns.length;
 
-      };
+      if (!isValid) {
+        return { ...state };
+      } else {
+        let newColumns = state.columns.map(c => {
+          switch (direction) {
+            case "right":
+              if (c.id === column.id) {
+                c.order += 1;
+              } else if (c.order === column.order) {
+                c.order -= 1;
+              }
+              break;
+            case "left":
+              if (c.id === column.id) {
+                c.order -= 1;
+              }
+              if (c.order === column.order - 1) {
+                c.order += 1;
+              }
+              break;
+            default:
+              console.error("direction must be 'left' or 'right'");
+          }
+          return c;
+        });
+
+        return {
+          ...state,
+          columns: newColumns
+        }
+      }
     }
     case "UPDATE_COLUMN": {
       const { id, card } = action.payload;
