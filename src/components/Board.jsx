@@ -7,9 +7,10 @@ import { connect } from 'react-redux';
 import { addColumn } from '../actions';
 
 function Board(props) {
+  const sortedColumns = props.columns.sort((a, b) => a.order > b.order ? 1 : -1);
   return <div className="task-board flex flex-row">
-    { props.columns
-      ? Object.keys(props.columns).map((column, index) => {
+    { props.columns.length
+      ? sortedColumns.map((column, index) => {
           return (
             <Column key={index} column={column}/>
           )
