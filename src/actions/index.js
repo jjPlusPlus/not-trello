@@ -8,9 +8,9 @@ export const removeCard = (id) => ({
   type: "REMOVE_CARD",
   payload: id
 })
-export const moveCard = (id, direction) => ({
+export const moveCard = (card, direction) => ({
   type: "MOVE_CARD",
-  payload: { id: id, direction: direction }
+  payload: { card: card, direction: direction }
 })
 export const updateCard = (id, card) => ({
   type: "UPDATE_CARD",
