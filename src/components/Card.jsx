@@ -12,8 +12,8 @@ function Card(props) {
     <h3 className="card--title">{card.name}</h3>
     <RemoveButton action={() => props.removeCard(card)}/>
     <p className="card-shortdescription">{card.shortdescription}</p>
-    <MoveButton direction="left" action={() => props.moveCard(card, "left")}/>
-    <MoveButton direction="right" action={() => props.moveCard(card, "right")}/>
+    <MoveButton direction="left" action={() => props.moveCard(card, props.columns, "left")}/>
+    <MoveButton direction="right" action={() => props.moveCard(card, props.columns, "right")}/>
   </div>
 }
 
@@ -24,7 +24,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   removeCard: (card) => dispatch(removeCard(card)),
-  moveCard: (card, direction) => dispatch(moveCard(card, direction))
+  moveCard: (card, columns, direction) => dispatch(moveCard(card, columns, direction))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card);
