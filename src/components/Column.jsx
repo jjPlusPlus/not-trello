@@ -41,7 +41,7 @@ function Column(props) {
 
 // passing the entire state
 const mapStateToProps = state => ({
-  ...state
+  cards: state.cards.cards
 })
 
 const mapDispatchToProps = dispatch => ({

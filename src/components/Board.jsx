@@ -25,7 +25,7 @@ function Board(props) {
 
 // passing the entire state
 const mapStateToProps = state => ({
-  ...state
+  columns: state.columns.columns
 })
 
 
