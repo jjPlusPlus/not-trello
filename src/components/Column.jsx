@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { addCard, removeColumn, moveColumn } from '../actions';
 
 function Column(props) {
-  const { columns, column, cards } = props;
+  const { column, cards } = props;
 
   // Only cards where the columnID is this column
   // ... Not sure if this is the correct Redux paradigm
@@ -17,8 +17,7 @@ function Column(props) {
 
   return <div className="column">
     <header className="column-header">
-      <h2 className="column-header--title">{column.title} {column.order}</h2>
-      <p>{column.id}</p>
+      <h2 className="column-header--title">{column.title}</h2>
       <MoveButton direction="left" action={() => props.moveColumn(column, "left")}/>
       <MoveButton direction="right" action={() => props.moveColumn(column, "right")}/>
       <RemoveButton action={() => props.removeColumn(column)}/>

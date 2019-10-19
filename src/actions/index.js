@@ -17,6 +17,13 @@ export const updateCard = (id, card) => ({
   payload: { id: id, card: card }
 })
 
+
+
+
+
+export const newColumn = () => ({
+  type: "NEW_COLUMN"
+})
 export const addColumn = () => ({
   type: "ADD_COLUMN",
   payload: {}
