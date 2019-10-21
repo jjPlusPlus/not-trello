@@ -10,11 +10,19 @@ const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer);
 
 export default function configureStore() {
+  const persistedState = localStorage.getItem('reduxState')
+                         ? JSON.parse(localStorage.getItem('reduxState'))
+                         : {};
 
   const store = createStore(
     rootReducer,
+    persistedState,
     applyMiddleware(logger, sagaMiddleware)
   );
+
+  store.subscribe(()=>{
+    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+  })
 
   sagaMiddleware.run(rootSaga)
 
