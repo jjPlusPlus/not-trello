@@ -64,10 +64,15 @@ export default function(state = { cards: [] }, action) {
       };
     }
     case "UPDATE_CARD": {
-      const { id, card } = action.payload;
+      const { card, field, value } = action.payload;
       return {
         ...state,
-
+        cards: state.cards.map((c) => {
+          if (c.id === card.id) {
+            c[field] = value;
+          }
+          return c;
+        })
       };
     }
     case "REMOVE_CARD": {
