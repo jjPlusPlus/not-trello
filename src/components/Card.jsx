@@ -11,7 +11,7 @@ function Card(props) {
   return <div className="card">
     <h3 className="card--title">{card.name}</h3>
     <RemoveButton action={() => props.removeCard(card)}/>
-    <p className="card-shortdescription">{card.shortdescription}</p>
+    <p className="card-shortdescription">{card.description}</p>
     <MoveButton direction="left" action={() => props.moveCard(card, props.columns, "left")}/>
     <MoveButton direction="right" action={() => props.moveCard(card, props.columns, "right")}/>
   </div>

@@ -6,7 +6,7 @@ import AddButton from './buttons/AddButton';
 import RemoveButton from './buttons/RemoveButton';
 
 import { connect } from 'react-redux';
-import { addCard, removeColumn, moveColumn } from '../actions';
+import { newCard, removeColumn, moveColumn } from '../actions';
 
 function Column(props) {
   const { column, cards } = props;
@@ -33,7 +33,7 @@ function Column(props) {
             <h3>No cards yet</h3>
           </div>
       }
-      <AddButton action={() => props.addCard(column.id)}/>
+      <AddButton action={() => props.newCard(column.id)}/>
     </div>
   </div>;
 }
@@ -44,7 +44,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  addCard: (column) => dispatch(addCard(column)),
+  newCard: (column) => dispatch(newCard(column)),
   removeColumn: (column) => dispatch(removeColumn(column)),
   moveColumn: (column, direction) => dispatch(moveColumn(column, direction))
 })
