@@ -11,8 +11,12 @@ function* newColumnWatcher() {
   yield takeLatest('NEW_COLUMN', newColumnSaga)
 }
 
-function* newCardSaga() {
+function* newCardSaga(action) {
+  // first just create the card
+  yield put({ type: "ADD_CARD", payload: action.payload });
 
+  // then go ahead and open the modal with the card detail
+  yield put({ type: "OPEN_MODAL" })
 }
 
 function* newCardWatcher() {
