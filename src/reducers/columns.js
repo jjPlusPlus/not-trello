@@ -1,8 +1,7 @@
 import uuid from 'uuid';
-const initialState = null;
+
 export default function(state = { columns: [] }, action) {
   switch (action.type) {
-    /* Columns */
     case "ADD_COLUMN": {
       const columnName = action.payload;
 
@@ -69,7 +68,6 @@ export default function(state = { columns: [] }, action) {
       const { id } = action.payload;
       return {
         ...state,
-        cards: state.cards.filter(card => card.column !== id),
         columns: state.columns.filter(column => column.id !== id)
       };
     }
