@@ -1,28 +1,35 @@
 import uuid from 'uuid';
-const initialState = [];
+
 export default function(state = { cards: [] }, action) {
   switch (action.type) {
-    /* Cards */
+
     case "ADD_CARD": {
       const { column } = action.payload;
       const newCard = {
         id: uuid(),
         name: "New Task",
-        shortdescription: "A new task about doing something",
+        description: "A new task about doing something",
         content: "Markdown content goes here",
-        column: column
+        column: column,
+        activity: [
+          {
+            label: "Card created: ",
+            timestamp: Date.now()
+          }
+        ]
       };
       return {
         ...state,
+        card: newCard.id,
         cards: [
           ...state.cards,
           newCard
         ]
       };
     }
+
     case "MOVE_CARD": {
       const { card, columns, direction } = action.payload;
-      debugger;
       let currentColumn = columns.columns.filter((c) => c.id === card.column);
       let order = currentColumn[0].order;
 
@@ -47,10 +54,8 @@ export default function(state = { cards: [] }, action) {
         cards: state.cards.map((c) => {
           if (c.id === card.id) {
             c.column = newColumn[0].id;
-            return c;
-          } else {
-            return c;
           }
+          return c;
         })
       }
       return {
