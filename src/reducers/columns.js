@@ -192,9 +192,7 @@ export default function(state = { columns: [] }, action) {
     }
     case "MOVE_COLUMN": {
       const { column, direction } = action.payload;
-      /*  invalid if this is the first column and a user wants to move it left
-          or this is the last column and a user wants to move it right
-      */
+
       const isValid = direction === "left" && column.order > 1 || direction === "right" && column.order < state.columns.length;
 
       if (!isValid) {

@@ -1,5 +1,3 @@
-import uuid from 'uuid';
-const initialState = null;
 export default function(state = { modal: null }, action) {
   switch (action.type) {
     case "OPEN_MODAL": {

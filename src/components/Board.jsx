@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Column from './Column';
-import AddButton from './buttons/AddButton';
 
 import { connect } from 'react-redux';
 import { newColumn } from '../actions';
