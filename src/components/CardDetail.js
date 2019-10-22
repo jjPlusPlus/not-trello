@@ -20,28 +20,39 @@ class CardDetail extends Component {
       edit: false,
     }
   }
-  handleInputChange = (card, field, value) => {
-    this.props.updateCard(card, field, value);
+  handleInputChange = (field, value) => {
+    this.props.updateCard(this.props.detail, field, value);
   }
 
   render() {
-    const card = this.props.cards.filter((c) => {
-      return c.id === this.props.card;
-    })[0];
+    const { columns, detail } = this.props;
 
-    if (!card) { return (<div className="card-detail"></div>) }
+    // targeting columns[column].cards[card]
+    let column = columns.filter(c => {
+      return c.id === detail.column;
+    });
+
+    if (!column[0]) { return (<div className="card-detail">Error: Column not found</div>) }
+
+    let card = column[0].cards.filter( c => {
+      return c.id === detail.card;
+    });
+
+    if (!card[0]) { return (<div className="card-detail">Error: Card not found</div>) }
+
+    card = card[0];
 
     return (
       <div className="card-detail">
         <EditableField
           element="h3"
           inputType="input"
-          updateInput={(value) => this.handleInputChange(card, "name", value)}
+          updateInput={(value) => this.handleInputChange("name", value)}
           field={card.name} />
         <EditableField
           element="p"
           inputType="textarea"
-          updateInput={(value) => this.handleInputChange(card, "description", value)}
+          updateInput={(value) => this.handleInputChange("description", value)}
           field={card.description}/>
 
         <hr />
@@ -60,8 +71,8 @@ class CardDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-  cards: state.cards.cards,
-  card: state.cards.card
+  columns: state.columns.columns,
+  detail: state.columns.detail
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -101,6 +101,16 @@ export default function(state = { columns: [] }, action) {
         })
       }
     }
+
+    case "OPEN_CARD_DETAIL": {
+      return {
+        ...state,
+        detail: {
+          card: action.payload.card,
+          column: action.payload.column
+        }
+      }
+    }
     case "ADD_COLUMN": {
       const columnName = action.payload;
 
@@ -112,7 +122,8 @@ export default function(state = { columns: [] }, action) {
           {
             id: uuid(),
             order: state.columns.length + 1,
-            title: columnName
+            title: columnName,
+            cards: []
           }
         ]
       };

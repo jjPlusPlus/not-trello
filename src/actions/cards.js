@@ -21,6 +21,9 @@ export const moveCardVertical = (card, direction) => ({
   payload: { card: card, direction: direction }
   type: "UPDATE_CARD",
   payload: { card: card, field: field, value: value }
+export const openCardDetail = (card, column) => ({
+  type: "OPEN_CARD_DETAIL",
+  payload: { card: card, column: column }
 })
 // export const saveCard = (id, card) => ({
 //   type: "SAVE_CARD",
