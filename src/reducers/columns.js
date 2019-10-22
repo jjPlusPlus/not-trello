@@ -2,6 +2,37 @@ import uuid from 'uuid';
 
 export default function(state = { columns: [] }, action) {
   switch (action.type) {
+    case "ADD_CARD": {
+      const { column, cardID } = action.payload;
+
+      const newCard = {
+        id: cardID,
+        column: column,
+        name: "New Task",
+        description: "A new task about doing something",
+        content: "Markdown content goes here",
+        activity: [
+          {
+            label: "Card created: ",
+            timestamp: Date.now()
+          }
+        ]
+      };
+
+      return {
+        ...state,
+        columns: state.columns.map((c) => {
+          if (c.id === column) {
+            c.cards = [
+              ...c.cards,
+              newCard
+            ]
+          }
+          return c;
+        })
+      };
+    }
+
     case "MOVE_CARD_HORIZONTAL": {
       const { card, direction } = action.payload;
       const columns = state.columns;
@@ -109,6 +140,37 @@ export default function(state = { columns: [] }, action) {
           card: action.payload.card,
           column: action.payload.column
         }
+      }
+    }
+    case "UPDATE_CARD": {
+      const { detail, field, value } = action.payload;
+      return {
+        ...state,
+        columns: state.columns.map((column) => {
+          if (column.id === detail.column) {
+            column.cards.map((card) => {
+              if (card.id === detail.card) {
+                card[field] = value;
+                return card;
+              }
+            })
+          }
+          return column;
+        })
+      };
+    }
+    case "REMOVE_CARD": {
+      const card = action.payload;
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if (column.id === card.column) {
+            column.cards = column.cards.filter((c) => {
+              return c.id !== card.id;
+            })
+          }
+          return column;
+        })
       }
     }
     case "ADD_COLUMN": {
