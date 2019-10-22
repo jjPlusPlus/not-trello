@@ -230,9 +230,23 @@ export default function(state = { columns: [] }, action) {
       }
     }
     case "UPDATE_COLUMN": {
-      const { id, card } = action.payload;
+      const { column, id } = action.payload;
       return {
         ...state,
+        columns: state.columns.map(c => {
+
+          if (c.id === column) {
+            if (!c.cards) {
+              c.cards = [];
+            }
+
+            c.cards.push({
+              id: id,
+              order: c.cards.length + 1
+            });
+          }
+          return c;
+        })
 
       };
     }
