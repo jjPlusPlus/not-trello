@@ -2,6 +2,105 @@ import uuid from 'uuid';
 
 export default function(state = { columns: [] }, action) {
   switch (action.type) {
+    case "MOVE_CARD_HORIZONTAL": {
+      const { card, direction } = action.payload;
+      const columns = state.columns;
+
+      let currentColumn = columns.filter((c) => c.id === card.column);
+
+      if (!currentColumn[0]) {
+        console.error("Move Card error: No column found");
+        return { ...state }
+      }
+
+      let order = currentColumn[0].order;
+
+      let isValid = direction === "left" && order > 1 || direction === "right" && order < columns.length;
+
+      if (!isValid) {
+        return { ...state };
+      }
+
+      let newColumn;
+
+      switch (direction) {
+        case "left":
+          newColumn = columns.filter((c) => c.order === currentColumn[0].order - 1);
+          break;
+        case "right":
+          newColumn = columns.filter((c) => c.order === currentColumn[0].order + 1);
+          break;
+      }
+
+      return {
+        ...state,
+        columns: state.columns.map((column) => {
+          // remove the card from the currentColumn
+          if (column.id === currentColumn[0].id) {
+            column.cards = column.cards.filter((c) => {
+              return c.id === card.id ? false : true;
+            })
+          }
+
+          // add the card to the new column
+          if (column.id === newColumn[0].id) {
+            // immutable?
+            card.column = newColumn[0].id;
+            column.cards = [
+              ...column.cards,
+              card
+            ]
+          }
+
+          return column;
+        })
+      }
+    }
+
+    case "MOVE_CARD_VERTICAL": {
+      const { card, direction } = action.payload;
+      const columns = state.columns;
+
+      let column = columns.filter((c) => c.id === card.column);
+
+      if (!column[0]) {
+        console.error("Move Card error: No column found");
+        return { ...state }
+      }
+
+      column = column[0];
+
+      let order = column.cards.findIndex((c) => {
+        return c.id === card.id;
+      });
+
+      let isValid = order !== -1
+                    && (
+                        direction === "up" && order > 0
+                        ||
+                        direction === "down" && order < column.cards.length - 1
+                    );
+
+      if (!isValid) {
+        console.log('not valid');
+        return { ...state };
+      }
+
+      return {
+        ...state,
+        columns: state.columns.map((col) => {
+          if (col.id === column.id) {
+            if (direction === "up") {
+              [col.cards[order - 1], col.cards[order]] = [col.cards[order], col.cards[order - 1]];
+            } else if (direction === "down") {
+              [col.cards[order + 1], col.cards[order]] = [col.cards[order], col.cards[order + 1]];
+            }
+          }
+
+          return col;
+        })
+      }
+    }
     case "ADD_COLUMN": {
       const columnName = action.payload;
 

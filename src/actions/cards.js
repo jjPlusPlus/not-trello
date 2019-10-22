@@ -12,11 +12,13 @@ export const removeCard = (id) => ({
   type: "REMOVE_CARD",
   payload: id
 })
-export const moveCard = (card, columns, direction) => ({
-  type: "MOVE_CARD",
-  payload: { card: card, columns: columns, direction: direction }
+export const moveCardHorizontal = (card, direction) => ({
+  type: "MOVE_CARD_HORIZONTAL",
+  payload: { card: card, direction: direction }
 })
-export const updateCard = (card, field, value) => ({
+export const moveCardVertical = (card, direction) => ({
+  type: "MOVE_CARD_VERTICAL",
+  payload: { card: card, direction: direction }
   type: "UPDATE_CARD",
   payload: { card: card, field: field, value: value }
 })
