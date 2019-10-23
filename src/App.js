@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.scss';
+
 import { connect } from 'react-redux';
 
 import Board from './components/Board';

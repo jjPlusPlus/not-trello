@@ -5,6 +5,9 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
 import configureStore from './store';
+import './app.scss';
+import './styles/tailwind.css';
+
 
 const store = configureStore();
 
