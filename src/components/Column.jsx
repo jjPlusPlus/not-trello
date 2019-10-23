@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Card from './Card';
 import MoveButton from './buttons/MoveButton';
@@ -8,30 +8,46 @@ import RemoveButton from './buttons/RemoveButton';
 import { connect } from 'react-redux';
 import { newCard, removeColumn, moveColumn } from '../actions';
 
-function Column(props) {
-  const { column } = props;
+import { Draggable } from 'react-beautiful-dnd';
 
-  return <div className="column">
-    <header className="column-header">
-      <h2 className="column-header--title">{column.title}</h2>
-      <MoveButton direction="left" action={() => props.moveColumn(column, "left")}/>
-      <MoveButton direction="right" action={() => props.moveColumn(column, "right")}/>
-      <RemoveButton action={() => props.removeColumn(column)}/>
-    </header>
-    <div className="column-body">
-      { column.cards
-        ? column.cards.map((card, index) => {
-            return (
-              <Card key={index} card={card}/>
-            )
-          })
-        : <div>
-            <h3>No cards yet</h3>
-          </div>
-      }
-      <AddButton action={() => props.newCard(column.id)}/>
-    </div>
-  </div>;
+class Column extends Component {
+  render() {
+    const { column } = this.props;
+    return (
+      <div className="column">
+        <header className="column-header">
+          <h2 className="column-header--title">{column.title}</h2>
+          <MoveButton direction="left" action={() => this.props.moveColumn(column, "left")}/>
+          <MoveButton direction="right" action={() => this.props.moveColumn(column, "right")}/>
+          <RemoveButton action={() => this.props.removeColumn(column)}/>
+        </header>
+
+        <div className="column-body">
+          { column.cards
+            ? column.cards.map((card, index) => {
+                return (
+                  <Draggable key={index} index={index} draggableId={card.id}>
+                    {provided => (
+                      <div ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Card key={index} card={card} />
+                      </div>
+                    )}
+                  </Draggable>
+                )
+              })
+            : <div>
+                <h3>No cards yet</h3>
+              </div>
+          }
+          <AddButton action={() => this.props.newCard(column.id)}/>
+        </div>
+
+      </div>
+    )
+  }
 }
 
 const mapDispatchToProps = dispatch => ({

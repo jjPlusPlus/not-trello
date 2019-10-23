@@ -20,6 +20,10 @@ export const moveCardVertical = (card, direction) => ({
   type: "MOVE_CARD_VERTICAL",
   payload: { card: card, direction: direction }
 })
+export const dropCard = (cardId, source, destination) => ({
+  type: "DRAG_DROP_CARD",
+  payload: { cardId: cardId, source: source, destination: destination}
+})
 export const updateCard = (detail, field, value) => ({
   type: "UPDATE_CARD",
   payload: { detail: detail, field: field, value: value }
