@@ -1,5 +1,5 @@
-// saga effects are cool https://redux-saga.js.org/docs/api/
 import { put, takeLatest, all } from 'redux-saga/effects';
+import uuid from 'uuid';
 
 function* newColumnSaga() {
   // do something async that LOOKS sync. This could be an API call. In this case, we're asking for a name.
@@ -12,20 +12,30 @@ function* newColumnWatcher() {
 }
 
 function* newCardSaga(action) {
-  // first just create the card
-  yield put({ type: "ADD_CARD", payload: action.payload });
+  let newCardID = uuid();
+  yield put({ type: "ADD_CARD", payload: {column: action.payload.column, cardID: newCardID } });
 
-  // then go ahead and open the modal with the card detail
   yield put({ type: "OPEN_MODAL" })
+
+  yield put({ type: "OPEN_CARD_DETAIL", payload: {column: action.payload.column, card: newCardID } });
 }
 
 function* newCardWatcher() {
   yield takeLatest('NEW_CARD', newCardSaga)
 }
 
+function* deleteCardSaga(id) {
+  yield put({ type:"REMOVE_CARD", payload: id })
+}
+
+function* deleteCardWatcher() {
+  yield takeLatest('DELETE_CARD', deleteCardSaga)
+}
+
 export default function* rootSaga() {
   yield all([
     newColumnWatcher(),
-    newCardWatcher()
+    newCardWatcher(),
+    deleteCardWatcher(),
   ]);
 }

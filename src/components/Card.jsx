@@ -4,7 +4,7 @@ import RemoveButton from './buttons/RemoveButton';
 import MoveButton from './buttons/MoveButton';
 
 import { connect } from 'react-redux';
-import { removeCard, moveCard } from '../actions';
+import { removeCard, moveCardHorizontal, moveCardVertical } from '../actions';
 
 function Card(props) {
   const { card } = props;
@@ -12,8 +12,10 @@ function Card(props) {
     <h3 className="card--title">{card.name}</h3>
     <RemoveButton action={() => props.removeCard(card)}/>
     <p className="card-shortdescription">{card.description}</p>
-    <MoveButton direction="left" action={() => props.moveCard(card, props.columns, "left")}/>
-    <MoveButton direction="right" action={() => props.moveCard(card, props.columns, "right")}/>
+    <MoveButton direction="left" action={() => props.moveCardHorizontal(card, "left")}/>
+    <MoveButton direction="right" action={() => props.moveCardHorizontal(card, "right")}/>
+    <MoveButton direction="up" action={() => props.moveCardVertical(card, "up")}/>
+    <MoveButton direction="down" action={() => props.moveCardVertical(card, "down")}/>
   </div>
 }
 
@@ -24,7 +26,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   removeCard: (card) => dispatch(removeCard(card)),
-  moveCard: (card, columns, direction) => dispatch(moveCard(card, columns, direction))
+  moveCardHorizontal: (card, direction) => dispatch(moveCardHorizontal(card, direction)),
+  moveCardVertical: (card, direction) => dispatch(moveCardVertical(card, direction))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card);

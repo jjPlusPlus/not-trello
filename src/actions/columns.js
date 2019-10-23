@@ -17,7 +17,3 @@ export const updateColumn = (id, column) => ({
   type: "UPDATE_COLUMN",
   payload: id, column
 })
-
-export const openModal = () => ({
-  type: "OPEN_MODAL"
-})

@@ -9,11 +9,7 @@ import { connect } from 'react-redux';
 import { newCard, removeColumn, moveColumn } from '../actions';
 
 function Column(props) {
-  const { column, cards } = props;
-
-  // Only cards where the columnID is this column
-  // ... Not sure if this is the correct Redux paradigm
-  const columnCards = cards.filter((c) => c.column === column.id);
+  const { column } = props;
 
   return <div className="column">
     <header className="column-header">
@@ -23,8 +19,8 @@ function Column(props) {
       <RemoveButton action={() => props.removeColumn(column)}/>
     </header>
     <div className="column-body">
-      { cards
-        ? columnCards.map((card, index) => {
+      { column.cards
+        ? column.cards.map((card, index) => {
             return (
               <Card key={index} card={card}/>
             )
@@ -38,15 +34,10 @@ function Column(props) {
   </div>;
 }
 
-// passing the entire state
-const mapStateToProps = state => ({
-  cards: state.cards.cards
-})
-
 const mapDispatchToProps = dispatch => ({
   newCard: (column) => dispatch(newCard(column)),
   removeColumn: (column) => dispatch(removeColumn(column)),
   moveColumn: (column, direction) => dispatch(moveColumn(column, direction))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Column);
+export default connect(null, mapDispatchToProps)(Column);

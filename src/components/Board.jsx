@@ -1,15 +1,14 @@
 import React from 'react';
 
 import Column from './Column';
-import AddButton from './buttons/AddButton';
 
 import { connect } from 'react-redux';
 import { newColumn } from '../actions';
 
 function Board(props) {
-  const sortedColumns = props.columns.sort((a, b) => a.order > b.order ? 1 : -1);
+  const sortedColumns = props.columns ? props.columns.sort((a, b) => a.order > b.order ? 1 : -1) : [];
   return <div className="task-board flex flex-row">
-    { props.columns.length
+    { props.columns && props.columns.length
       ? sortedColumns.map((column, index) => {
           return (
             <Column key={index} column={column}/>
