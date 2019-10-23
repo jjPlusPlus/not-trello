@@ -1,82 +1,33 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Signika&display=swap');
 
-/* Base color variables */
-$lightest-grey: #efefef;
-$dark-grey: #575757;
-$middle-grey: #999;
-
-/* component-specific variables */
-
-$topbar-background: #007aff;
-$topbar-text-color: #fff;
-$card-background-color: #FFF;
-
-
-
 /* basic reset stuff */
 html, body {
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
   font-family: "Roboto Mono";
-  min-height: 100vh;
-  min-width: 100vw;
+  background-image: url('/email-pattern.png');
 }
 
 body {
-  background-color: $lightest-grey;
+  @apply bg-gray-100;
 }
 
 h1,h2,h3,h4,h5,h6 {
   font-family: "Signika"
 }
 
-/* flex boilerplate */
-
-.flex {
-  display: flex;
-}
-.flex-column {
-  flex-direction: column;
-}
-.flex-row {
-  flex-direction: row;
+.not-trello {
+  height: 100vh;
 }
 
-/* Component styles */
+.board {
+  height: 100vh;
+  padding-top: 10vh;
 }
 .top-bar {
-  padding: 7.5px 15px;
-  background-color: $topbar-background;
-  color: $topbar-text-color;
+  height: 10vh;
 }
-
-.column {
-  width: 300px;
-  background-color: $dark-grey;
-  margin: 15px;
+.column-wrapper {
+  min-width: 300px;
 }
-
-.column-header {
-  background-color: $middle-grey;
-  padding: 15px;
-  h2 {
-    margin: 0;
-  }
-}
-
-.card {
-  background-color: $card-background-color;
-  padding: 15px;
-  margin: 7.5px;
-}
-
-.card-shortdescription {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: auto;
-}
-
 
 .modal-wrapper {
   position: fixed;
@@ -85,17 +36,17 @@ h1,h2,h3,h4,h5,h6 {
   width: 100vw;
   height: 100vh;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
   background: rgba(0,0,0,0.6);
 }
 .modal {
-  min-height: 50vh;
-  min-width: 800px;
+  // min-height: 50vh;
+  // min-width: 800px;
   background: #FFF;
-  border-radius: 5px;
-  padding: 1em;
+  // border-radius: 5px;
+  // padding: 1em;
   color: #575757;
 }
