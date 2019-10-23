@@ -133,6 +133,47 @@ export default function(state = { columns: [] }, action) {
       }
     }
 
+    case "DRAG_DROP_CARD": {
+      const { cardId, source, destination } = action.payload;
+      const columns = state.columns;
+      let sourceColumn = columns.filter((c) => c.id === source.droppableId);
+
+      if (!sourceColumn[0]) {
+        console.error("Drop Card error: No source column found");
+        return { ...state }
+      }
+
+      sourceColumn = sourceColumn[0];
+
+      let card = sourceColumn.cards.filter((c) => {
+        return c.id === cardId;
+      })
+
+      card = card[0];
+      return {
+        ...state,
+        columns: columns.map((column) => {
+          // filter out the card from the source column
+          if (column.id === source.droppableId) {
+            column.cards = column.cards.filter((c) => {
+              return c.id !== cardId;
+            })
+          }
+          // add the card to the dest. column at the desired index
+          if (column.id === destination.droppableId) {
+            let destinationCopy = column.cards.slice();
+            destinationCopy.splice(destination.index, 0, card);
+            column.cards = destinationCopy.map((c) => {
+              if (c.id === cardId) {
+                c['column'] = destination.droppableId;
+              }
+              return c;
+            })
+          }
+          return column;
+        })
+      }
+    }
     case "OPEN_CARD_DETAIL": {
       return {
         ...state,
