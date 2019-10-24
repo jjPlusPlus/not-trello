@@ -8,10 +8,9 @@ import CardDetail from './components/CardDetail';
 import { newColumn } from './actions';
 
 function App(props) {
-
   return (
     <div className="not-trello">
-      <div className="top-bar p-4 fixed w-full bg-purple-800 text-yellow-400 flex flex-row shadow-2xl">
+      <div className="top-bar p-4 fixed w-full bg-purple-800 text-yellow-400 flex flex-row items-center shadow-2xl">
         <h1 className="text-4xl flex-grow">Not Trello</h1>
         <button onClick={props.newColumn}>ADD COLUMN</button>
       </div>
