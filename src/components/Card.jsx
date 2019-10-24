@@ -11,17 +11,17 @@ class Card extends Component {
     const { card } = this.props;
     return (
       <div className="my-2 bg-white rounded-sm shadow-md flex flex-row">
-        <MoveButton direction="left" extraClasses="p-1 border-r border-gray-300 text-gray-500" action={() => this.props.moveCardHorizontal(card, "left")}/>
+        <MoveButton direction="left" extraClasses="p-1 border-r border-gray-300 text-gray-500 hover:bg-teal-100" action={() => this.props.moveCardHorizontal(card, "left")}/>
         <div className="flex flex-col min-w-0 w-full">
-          <MoveButton direction="up" extraClasses="p-0 border-b border-gray-300 text-gray-500" action={() => this.props.moveCardVertical(card, "up")}/>
-          <div className="p-1">
+          <MoveButton direction="up" extraClasses="p-0 border-b border-gray-300 text-gray-500 hover:bg-teal-100" action={() => this.props.moveCardVertical(card, "up")}/>
+          <div className="p-1 hover:bg-teal-200" onClick={() => this.props.openCard(card, card.column)}>
             <h3 className="text-lg">{card.name}</h3>
             {/*<RemoveButton action={() => this.props.removeCard(card)}/>*/}
             <p className="text-base truncate">{card.description}</p>
           </div>
-          <MoveButton direction="down" extraClasses="p-0 border-t border-gray-300 text-gray-500" action={() => this.props.moveCardVertical(card, "down")}/>
+          <MoveButton direction="down" extraClasses="p-0 border-t border-gray-300 text-gray-500 hover:bg-teal-100" action={() => this.props.moveCardVertical(card, "down")}/>
         </div>
-        <MoveButton direction="right" extraClasses="p-1 border-l border-gray-300 text-gray-500" action={() => this.props.moveCardHorizontal(card, "right")}/>
+        <MoveButton direction="right" extraClasses="p-1 border-l border-gray-300 text-gray-500 hover:bg-teal-100" action={() => this.props.moveCardHorizontal(card, "right")}/>
       </div>
     )
   }
