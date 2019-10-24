@@ -180,7 +180,31 @@ export default function(state = { columns: [] }, action) {
         detail: {
           card: action.payload.card,
           column: action.payload.column
-        }
+        },
+        modal: true
+      }
+    }
+    case "LOG_CARD_ACTIVITY": {
+      const { card } = action.payload;
+      return {
+        ...state,
+        columns: state.columns.map((col) => {
+          if (col.id === card.column) {
+            col.cards.map((c) => {
+              if (c.id === card.id) {
+                c.activity = [
+                  ...c.activity,
+                  {
+                    label: "Card viewed: ",
+                    timestamp: Date.now()
+                  }
+                ]
+              }
+              return c;
+            })
+          }
+          return col;
+        })
       }
     }
     case "UPDATE_CARD": {
@@ -295,6 +319,18 @@ export default function(state = { columns: [] }, action) {
         ...state,
         columns: state.columns.filter(column => column.id !== id)
       };
+    }
+    case "OPEN_MODAL": {
+      return {
+        ...state,
+        modal: true
+      }
+    }
+    case "CLOSE_MODAL": {
+      return {
+        ...state,
+        modal: false
+      }
     }
     default:
       return state;

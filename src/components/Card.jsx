@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import MoveButton from './buttons/MoveButton';
 
 import { connect } from 'react-redux';
-import { removeCard, moveCardHorizontal, moveCardVertical } from '../actions';
+import { moveCardHorizontal, moveCardVertical, openCard } from '../actions';
 
 class Card extends Component {
 
@@ -34,7 +34,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   moveCardHorizontal: (card, direction) => dispatch(moveCardHorizontal(card, direction)),
-  moveCardVertical: (card, direction) => dispatch(moveCardVertical(card, direction))
+  moveCardVertical: (card, direction) => dispatch(moveCardVertical(card, direction)),
+  openCard: (card, column) => dispatch(openCard(card, column))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card);

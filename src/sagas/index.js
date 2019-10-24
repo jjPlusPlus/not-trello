@@ -24,6 +24,16 @@ function* newCardWatcher() {
   yield takeLatest('NEW_CARD', newCardSaga)
 }
 
+function* openCardSaga(action) {
+  yield put({ type: "OPEN_MODAL" })
+  yield put({type: "OPEN_CARD_DETAIL", payload: {card: action.payload.card.id, column: action.payload.column }})
+  yield put({type: "LOG_CARD_ACTIVITY", payload: {card: action.payload.card, column: action.payload.column }})
+}
+
+function* openCardWatcher() {
+  yield takeLatest('OPEN_CARD', openCardSaga)
+}
+
 function* deleteCardSaga(id) {
   yield put({ type:"REMOVE_CARD", payload: id })
 }
@@ -37,5 +47,6 @@ export default function* rootSaga() {
     newColumnWatcher(),
     newCardWatcher(),
     deleteCardWatcher(),
+    openCardWatcher()
   ]);
 }

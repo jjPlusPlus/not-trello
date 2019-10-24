@@ -28,25 +28,9 @@ h1,h2,h3,h4,h5,h6 {
 .column-wrapper {
   min-width: 300px;
 }
-
-.modal-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
-  background: rgba(0,0,0,0.6);
-}
 .modal {
-  // min-height: 50vh;
-  // min-width: 800px;
-  background: #FFF;
-  // border-radius: 5px;
-  // padding: 1em;
-  color: #575757;
+  transition: opacity 0.25s ease;
+}
+.card-title-input {
+  font-family: "Signika";
 }
