@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { dropCard } from '../actions';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
 class Board extends Component {
   /*
     {
@@ -38,8 +41,20 @@ class Board extends Component {
                 </Droppable>
               )
             })
-          : <div>
-              <h3>AINT NO COLUMNS YET THO</h3>
+          : <div className="w-full h-full flex items-center justify-center">
+              <div className="bg-white w-1/3 rounded p-8">
+                <h3 className="text-4xl">Welcome to Not Trello</h3>
+                <p>
+                  This is a side project I built inspired by a rapid-dev test I took.
+                  There are so many "Todo App" starters out there, I decided to take one
+                  a step further and see if I could put my own spin on it.
+                </p>
+                <br />
+                <p>
+                  You can get started by adding some columns. You can also view the project on &nbsp;
+                  <a className="text-purple-600" href="https://www.github.com/jjplusplus/not-trello" target="_blank"><FontAwesomeIcon icon={faGithub}/> Github</a>.
+                </p>
+              </div>
             </div>
         }
       </div>
