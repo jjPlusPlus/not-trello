@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import RemoveButton from './buttons/RemoveButton';
 import MoveButton from './buttons/MoveButton';
 
 import { connect } from 'react-redux';
@@ -34,7 +33,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  removeCard: (card) => dispatch(removeCard(card)),
   moveCardHorizontal: (card, direction) => dispatch(moveCardHorizontal(card, direction)),
   moveCardVertical: (card, direction) => dispatch(moveCardVertical(card, direction))
 })

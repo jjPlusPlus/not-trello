@@ -18,8 +18,8 @@ class Column extends Component {
         <header className="flex flex-row items-center text-white bg-black">
           <MoveButton direction="left" extraClasses="p-2" action={() => this.props.moveColumn(column, "left")}/>
           <h2 className="flex-1 p-2 text-lg">{column.title}</h2>
+          <RemoveButton action={() => this.props.removeColumn(column)}/>
           <MoveButton direction="right" extraClasses="p-2" action={() => this.props.moveColumn(column, "right")}/>
-          {/*<RemoveButton action={() => this.props.removeColumn(column)}/>*/}
         </header>
 
         <div className="p-2">

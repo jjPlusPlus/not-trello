@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { updateCard } from '../actions';
 
+import RemoveButton from './buttons/RemoveButton';
 import EditableField from './EditableField';
 
 /* CARD DETAIL
