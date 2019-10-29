@@ -1,17 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Card from './Card';
-import MoveButton from './buttons/MoveButton';
-import AddButton from './buttons/AddButton';
-import RemoveButton from './buttons/RemoveButton';
+import Card from "./Card";
 
-import { connect } from 'react-redux';
-import { newCard, removeColumn, moveColumn } from '../actions';
+import { AnyAction, Dispatch } from "redux";
 
-import { Draggable } from 'react-beautiful-dnd';
+import AddButton from "./buttons/AddButton";
+import MoveButton from "./buttons/MoveButton";
+import RemoveButton from "./buttons/RemoveButton";
 
-class Column extends Component {
-  render() {
+import { connect } from "react-redux";
+import { moveColumn, newCard, removeColumn } from "../actions";
+
+import { Draggable } from "react-beautiful-dnd";
+
+interface ColumnProps {
+  column: any;
+  key: any;
+  moveColumn: any;
+  removeColumn: any;
+  newCard: any;
+  children: any;
+}
+
+class Column extends Component<ColumnProps> {
+  public render() {
     const { column } = this.props;
     return (
       <div className="bg-gray-400">
@@ -24,10 +36,10 @@ class Column extends Component {
 
         <div className="p-2">
           { column.cards
-            ? column.cards.map((card, index) => {
+            ? column.cards.map((card: any, index: number, id: string) => {
                 return (
                   <Draggable key={index} index={index} draggableId={card.id}>
-                    {provided => (
+                    {(provided) => (
                       <div ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -50,10 +62,10 @@ class Column extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  newCard: (column) => dispatch(newCard(column)),
-  removeColumn: (column) => dispatch(removeColumn(column)),
-  moveColumn: (column, direction) => dispatch(moveColumn(column, direction))
-})
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
+  moveColumn: (column: any, direction: string) => dispatch(moveColumn(column, direction)),
+  newCard: (column: string) => dispatch(newCard(column)),
+  removeColumn: (column: string) => dispatch(removeColumn(column)),
+});
 
 export default connect(null, mapDispatchToProps)(Column);
