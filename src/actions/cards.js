@@ -32,3 +32,7 @@ export const openCardDetail = (card, column) => ({
   type: "OPEN_CARD_DETAIL",
   payload: { card: card, column: column }
 })
+export const openCard = (card, column) => ({
+  type: "OPEN_CARD",
+  payload: { card: card, column: column }
+})

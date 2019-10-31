@@ -14,15 +14,15 @@ class Column extends Component {
   render() {
     const { column } = this.props;
     return (
-      <div className="column">
-        <header className="column-header">
-          <h2 className="column-header--title">{column.title}</h2>
-          <MoveButton direction="left" action={() => this.props.moveColumn(column, "left")}/>
-          <MoveButton direction="right" action={() => this.props.moveColumn(column, "right")}/>
+      <div className="bg-gray-400">
+        <header className="flex flex-row items-center text-white bg-black">
+          <MoveButton direction="left" extraClasses="p-2" action={() => this.props.moveColumn(column, "left")}/>
+          <h2 className="flex-1 p-2 text-lg">{column.title}</h2>
           <RemoveButton action={() => this.props.removeColumn(column)}/>
+          <MoveButton direction="right" extraClasses="p-2" action={() => this.props.moveColumn(column, "right")}/>
         </header>
 
-        <div className="column-body">
+        <div className="p-2">
           { column.cards
             ? column.cards.map((card, index) => {
                 return (
@@ -42,7 +42,7 @@ class Column extends Component {
                 <h3>No cards yet</h3>
               </div>
           }
-          <AddButton action={() => this.props.newCard(column.id)}/>
+          <AddButton extraClasses="w-full" action={() => this.props.newCard(column.id)}/>
         </div>
 
       </div>
