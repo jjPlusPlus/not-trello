@@ -12,7 +12,7 @@ const sagaMiddleware = createSagaMiddleware();
 export default function configureStore() {
   const persistedState = localStorage.getItem("reduxState")
                          ? JSON.parse(localStorage.getItem("reduxState") || "{}")
-                         : {};
+                         : {columns: [], detail: null, modal: false};
 
   const store = createStore<AppState, any, any, any>(
     rootReducer,
