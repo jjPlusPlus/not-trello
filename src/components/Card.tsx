@@ -34,6 +34,7 @@ class Card extends Component<CardProps> {
           <MoveButton
             direction="up"
             extraClasses="p-0 border-b border-gray-300 text-gray-500 hover:bg-teal-100"
+            action={() => this.props.moveCardVertical(card, "up")}
           />
           <div className="p-1 hover:bg-teal-200" onClick={() => this.props.openCard(card, card.column)}>
             <h3 className="text-lg">{card.name}</h3>
@@ -42,11 +43,13 @@ class Card extends Component<CardProps> {
           <MoveButton
             direction="down"
             extraClasses="p-0 border-t border-gray-300 text-gray-500 hover:bg-teal-100"
+            action={() => this.props.moveCardVertical(card, "down")}
           />
         </div>
         <MoveButton
           direction="right"
           extraClasses="p-1 border-l border-gray-300 text-gray-500 hover:bg-teal-100"
+          action={() => this.props.moveCardHorizontal(card, "right")}
         />
       </div>
     );

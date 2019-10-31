@@ -5,6 +5,7 @@ import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fort
 
 function MoveButton(props) {
   const { direction } = props;
+
   let icon;
   switch (direction) {
     case "left":

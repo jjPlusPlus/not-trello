@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { AnyAction, Dispatch } from "redux";
 
-import { AppState } from "../types";
+import { AppState, Card } from "../types";
 
 import { removeCard, updateCard } from "../actions";
 
@@ -30,11 +30,11 @@ class CardDetail extends Component<CardDetailProps, CardDetailState> {
       showPreview: true,
     };
   }
-  public handleInputChange = (field: any, value: any) => {
-    this.props.updateCard(this.props.detail, field, value);
+  public handleInputChange = (card: Card, field: any, value: any) => {
+    this.props.updateCard(card, field, value);
   }
-  public handleMarkdownChange = (event: any) => {
-    this.props.updateCard(this.props.detail, "description", event.target.value);
+  public handleMarkdownChange = (card: Card, event: any) => {
+    this.props.updateCard(card, "description", event.target.value);
   }
 
   public render() {
@@ -62,7 +62,7 @@ class CardDetail extends Component<CardDetailProps, CardDetailState> {
             <EditableField
               element="h3"
               inputType="input"
-              updateInput={(value: any) => this.handleInputChange("name", value)}
+              updateInput={(value: any) => this.handleInputChange(card, "name", value)}
               field={card.name}
               extraClasses="text-2xl underline"
               extraInputClasses="text-2xl card-title-input"
@@ -91,7 +91,7 @@ class CardDetail extends Component<CardDetailProps, CardDetailState> {
                   name="description"
                   value={card.description}
                   rows={14}
-                  onChange={(event) => this.handleMarkdownChange(event)}
+                  onChange={(event) => this.handleMarkdownChange(card, event)}
                 />
                 <button
                   className="rounded-sm bg-teal-500 px-4 py-2 border-teal-100 text-white hover:bg-teal-800"

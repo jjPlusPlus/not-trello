@@ -8,8 +8,8 @@ export interface NewCard {
 export interface AddCard {
   type: constants.ADD_CARD;
   payload: {
-    column: string,
-    cardID: string,
+    columnId: string,
+    cardId: string,
   };
 }
 export interface RemoveCard {
@@ -88,16 +88,16 @@ export type CardAction =
   | AddCard
   | NewCard;
 
-export default "poop";
+export default "tslint lol";
 
 // double check: is column an id or Column object?
 export const newCard = (column: string): NewCard  => ({
   payload: column,
   type: "NEW_CARD",
 });
-export const addCard = (payload: { column: string, cardID: string}): AddCard => {
+export const addCard = (payload: { columnId: string, cardId: string}): AddCard => {
   return {
-    payload: { column: payload.column, cardID: payload.cardID },
+    payload: { columnId: payload.columnId, cardId: payload.cardId },
     type: "ADD_CARD",
   };
 };
@@ -118,10 +118,13 @@ export const dropCard = (cardId: string, source: IDragDrop, destination: IDragDr
   payload: { cardId, source, destination },
   type: "DRAG_DROP_CARD",
 });
-export const updateCard = (card: Card, field: string, value: any): UpdateCard => ({
-  payload: { card, field, value },
-  type: "UPDATE_CARD",
-});
+export const updateCard = (card: Card, field: string, value: any): UpdateCard => {
+  return {
+    payload: { card, field, value },
+    type: "UPDATE_CARD",
+  };
+};
+
 export const openCardDetail = (card: string, column: string): OpenCardDetail => ({
   payload: { card, column },
   type: "OPEN_CARD_DETAIL",

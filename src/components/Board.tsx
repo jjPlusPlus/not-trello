@@ -58,9 +58,8 @@ class Board extends Component<IStateProps> {
   }
 
   public render() {
-    debugger;
     const sortedColumns = this.props.columns
-                          ? this.props.columns.columns.sort((a: any, b: any) => a.order > b.order ? 1 : -1)
+                          ? this.props.columns.sort((a: any, b: any) => a.order > b.order ? 1 : -1)
                           : [];
 
     return (
@@ -107,9 +106,11 @@ class Board extends Component<IStateProps> {
 }
 
 // passing the entire state
-const mapStateToProps = (state: AppState) => ({
-  columns: state.columns,
-});
+const mapStateToProps = (state: AppState) => {
+  return {
+    columns: state.columns,
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
   dropCard: (cardId: string, source: IDragDrop, destination: IDragDrop) =>
