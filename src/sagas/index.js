@@ -2,7 +2,6 @@ import { put, takeLatest, all } from 'redux-saga/effects';
 import uuid from 'uuid';
 
 function* newColumnSaga() {
-  // do something async that LOOKS sync. This could be an API call. In this case, we're asking for a name.
   const newColumnName = yield prompt("New column name:");
   yield put({ type: "ADD_COLUMN", payload: newColumnName });
 }
@@ -12,12 +11,12 @@ function* newColumnWatcher() {
 }
 
 function* newCardSaga(action) {
-  let newCardID = uuid();
-  yield put({ type: "ADD_CARD", payload: {column: action.payload.column, cardID: newCardID } });
+  let newCardId = uuid();
+  yield put({ type: "ADD_CARD", payload: {columnId: action.payload, cardId: newCardId } });
 
   yield put({ type: "OPEN_MODAL" })
 
-  yield put({ type: "OPEN_CARD_DETAIL", payload: {column: action.payload.column, card: newCardID } });
+  yield put({ type: "OPEN_CARD_DETAIL", payload: {column: action.payload, card: newCardId } });
 }
 
 function* newCardWatcher() {

@@ -1,76 +1,92 @@
-import uuid from 'uuid';
+import uuid from "uuid";
+import { AppState } from "../types";
 
-export default function(state = { columns: [] }, action) {
+import * as constants from "../constants";
+
+import { CardAction } from "../actions/cards";
+import { ColumnAction } from "../actions/columns";
+import { ModalAction } from "../actions/modal";
+
+import { Reducer } from "redux";
+
+const initialState = {
+  columns: [],
+  detail: null,
+  modal: false,
+};
+
+const reducer: Reducer = (state = initialState, action: CardAction | ColumnAction | ModalAction) => {
+
   switch (action.type) {
-    case "ADD_CARD": {
-      const { column, cardID } = action.payload;
+    case constants.ADD_CARD: {
+      const { columnId, cardId } = action.payload;
 
       const newCard = {
-        id: cardID,
-        column: column,
-        name: "New Task",
-        description: "A new task about doing something",
+        column: columnId,
         content: "Markdown content goes here",
+        description: "A new task about doing something",
+        id: cardId,
+        name: "New Task",
         activity: [
           {
             label: "Card created: ",
-            timestamp: Date.now()
-          }
-        ]
+            timestamp: Date.now(),
+          },
+        ],
       };
 
       return {
         ...state,
-        columns: state.columns.map((c) => {
-          if (c.id === column) {
+        columns: state.columns.map((c: any) => {
+          if (c.id === columnId) {
             c.cards = [
               ...c.cards,
-              newCard
-            ]
+              newCard,
+            ];
           }
           return c;
-        })
+        }),
       };
     }
 
-    case "MOVE_CARD_HORIZONTAL": {
+    case constants.MOVE_CARD_HORIZONTAL: {
       const { card, direction } = action.payload;
       const columns = state.columns;
 
-      let currentColumn = columns.filter((c) => c.id === card.column);
+      const currentColumn = columns.filter((c: any) => c.id === card.column);
 
       if (!currentColumn[0]) {
         console.error("Move Card error: No column found");
-        return { ...state }
+        return { ...state };
       }
 
-      let order = currentColumn[0].order;
+      const order = currentColumn[0].order;
 
-      let isValid = direction === "left" && order > 1 || direction === "right" && order < columns.length;
+      const isValid = direction === "left" && order > 1 || direction === "right" && order < columns.length;
 
       if (!isValid) {
         return { ...state };
       }
 
-      let newColumn;
+      let newColumn: any;
 
       switch (direction) {
         case "left":
-          newColumn = columns.filter((c) => c.order === currentColumn[0].order - 1);
+          newColumn = columns.filter((c: any) => c.order === currentColumn[0].order - 1);
           break;
         case "right":
-          newColumn = columns.filter((c) => c.order === currentColumn[0].order + 1);
+          newColumn = columns.filter((c: any) => c.order === currentColumn[0].order + 1);
           break;
       }
 
       return {
         ...state,
-        columns: state.columns.map((column) => {
+        columns: state.columns.map((column: any) => {
           // remove the card from the currentColumn
           if (column.id === currentColumn[0].id) {
-            column.cards = column.cards.filter((c) => {
+            column.cards = column.cards.filter((c: any) => {
               return c.id === card.id ? false : true;
-            })
+            });
           }
 
           // add the card to the new column
@@ -79,48 +95,46 @@ export default function(state = { columns: [] }, action) {
             card.column = newColumn[0].id;
             column.cards = [
               ...column.cards,
-              card
-            ]
+              card,
+            ];
           }
 
           return column;
-        })
-      }
+        }),
+      };
     }
 
-    case "MOVE_CARD_VERTICAL": {
+    case constants.MOVE_CARD_VERTICAL: {
       const { card, direction } = action.payload;
       const columns = state.columns;
 
-      let column = columns.filter((c) => c.id === card.column);
+      const column = columns.filter((c: any) => c.id === card.column);
 
       if (!column[0]) {
         console.error("Move Card error: No column found");
-        return { ...state }
+        return { ...state };
       }
 
-      column = column[0];
-
-      let order = column.cards.findIndex((c) => {
+      const order = column[0].cards.findIndex((c: any) => {
         return c.id === card.id;
       });
 
-      let isValid = order !== -1
+      const isValid = order !== -1
                     && (
                         direction === "up" && order > 0
                         ||
-                        direction === "down" && order < column.cards.length - 1
+                        direction === "down" && order < column[0].cards.length - 1
                     );
 
       if (!isValid) {
-        console.log('not valid');
+        console.log("not valid");
         return { ...state };
       }
 
       return {
         ...state,
-        columns: state.columns.map((col) => {
-          if (col.id === column.id) {
+        columns: state.columns.map((col: any) => {
+          if (col.id === column[0].id) {
             if (direction === "up") {
               [col.cards[order - 1], col.cards[order]] = [col.cards[order], col.cards[order - 1]];
             } else if (direction === "down") {
@@ -129,118 +143,121 @@ export default function(state = { columns: [] }, action) {
           }
 
           return col;
-        })
-      }
+        }),
+      };
     }
 
-    case "DRAG_DROP_CARD": {
+    case constants.DRAG_DROP_CARD: {
       const { cardId, source, destination } = action.payload;
       const columns = state.columns;
-      let sourceColumn = columns.filter((c) => c.id === source.droppableId);
+      const sourceColumn = columns.filter((c: any) => c.id === source.droppableId);
 
       if (!sourceColumn[0]) {
         console.error("Drop Card error: No source column found");
-        return { ...state }
+        return { ...state };
       }
 
-      sourceColumn = sourceColumn[0];
-
-      let card = sourceColumn.cards.filter((c) => {
+      const card = sourceColumn[0].cards.filter((c: any) => {
         return c.id === cardId;
-      })
+      });
 
-      card = card[0];
       return {
         ...state,
-        columns: columns.map((column) => {
+        columns: columns.map((column: any) => {
           // filter out the card from the source column
           if (column.id === source.droppableId) {
-            column.cards = column.cards.filter((c) => {
+            column.cards = column.cards.filter((c: any) => {
               return c.id !== cardId;
-            })
+            });
           }
           // add the card to the dest. column at the desired index
           if (column.id === destination.droppableId) {
-            let destinationCopy = column.cards.slice();
-            destinationCopy.splice(destination.index, 0, card);
-            column.cards = destinationCopy.map((c) => {
+            const destinationCopy = column.cards.slice();
+            destinationCopy.splice(destination.index, 0, card[0]);
+            column.cards = destinationCopy.map((c: any) => {
               if (c.id === cardId) {
-                c['column'] = destination.droppableId;
+                c.column = destination.droppableId;
               }
               return c;
-            })
+            });
           }
           return column;
-        })
-      }
+        }),
+      };
     }
-    case "OPEN_CARD_DETAIL": {
+    case constants.OPEN_CARD_DETAIL: {
       return {
         ...state,
         detail: {
           card: action.payload.card,
-          column: action.payload.column
+          column: action.payload.column,
         },
-        modal: true
-      }
+        modal: true,
+      };
     }
     case "LOG_CARD_ACTIVITY": {
       const { card } = action.payload;
       return {
         ...state,
-        columns: state.columns.map((col) => {
+        columns: state.columns.map((col: any) => {
           if (col.id === card.column) {
-            col.cards.map((c) => {
+            col.cards.map((c: any) => {
               if (c.id === card.id) {
                 c.activity = [
                   ...c.activity,
                   {
                     label: "Card viewed: ",
-                    timestamp: Date.now()
-                  }
-                ]
+                    timestamp: Date.now(),
+                  },
+                ];
               }
               return c;
-            })
+            });
           }
           return col;
-        })
-      }
-    }
-    case "UPDATE_CARD": {
-      const { detail, field, value } = action.payload;
-      return {
-        ...state,
-        columns: state.columns.map((column) => {
-          if (column.id === detail.column) {
-            column.cards.map((card) => {
-              if (card.id === detail.card) {
-                card[field] = value;
-                return card;
-              }
-            })
-          }
-          return column;
-        })
+        }),
       };
     }
-    case "REMOVE_CARD": {
-      const card = action.payload;
+
+    case constants.UPDATE_CARD: {
+      const { card, field, value } = action.payload;
+
       return {
         ...state,
-        columns: state.columns.map(column => {
+        columns: state.columns.map((column: any) => {
           if (column.id === card.column) {
-            column.cards = column.cards.filter((c) => {
-              return c.id !== card.id;
-            })
+            column.cards.map((c: any) => {
+              if (c.id === card.id) {
+                for (let key of Object.keys(c)) {
+                  if ( key === field) {
+                    key = value;
+                  }
+                }
+                c[field] = value;
+                return c;
+              }
+            });
           }
           return column;
-        })
-      }
+        }),
+      };
     }
-    case "ADD_COLUMN": {
-      const columnName = action.payload;
-
+    case constants.REMOVE_CARD: {
+      const { card } = action.payload;
+      return {
+        ...state,
+        columns: state.columns.map((column: any) => {
+          if (column.id === card.column) {
+            column.cards = column.cards.filter((c: any) => {
+              return c.id !== card.id;
+            });
+          }
+          return column;
+        }),
+      };
+    }
+    case constants.ADD_COLUMN: {
+      const name = action.payload;
       // new columns will always have an index that is current column length + 1
       return {
         ...state,
@@ -249,21 +266,23 @@ export default function(state = { columns: [] }, action) {
           {
             id: uuid(),
             order: state.columns.length + 1,
-            title: columnName,
-            cards: []
-          }
-        ]
+            title: name,
+            cards: [],
+          },
+        ],
       };
     }
-    case "MOVE_COLUMN": {
+    case constants.MOVE_COLUMN: {
       const { column, direction } = action.payload;
 
-      const isValid = direction === "left" && column.order > 1 || direction === "right" && column.order < state.columns.length;
+      const isValid =
+               direction === "left" && column.order > 1
+            || direction === "right" && column.order < state.columns.length;
 
       if (!isValid) {
         return { ...state };
       } else {
-        let newColumns = state.columns.map(c => {
+        const newColumns = state.columns.map((c: any) => {
           switch (direction) {
             case "right":
               if (c.id === column.id) {
@@ -288,15 +307,15 @@ export default function(state = { columns: [] }, action) {
 
         return {
           ...state,
-          columns: newColumns
-        }
+          columns: newColumns,
+        };
       }
     }
-    case "UPDATE_COLUMN": {
+    case constants.UPDATE_COLUMN: {
       const { column, id } = action.payload;
       return {
         ...state,
-        columns: state.columns.map(c => {
+        columns: state.columns.map((c: any) => {
 
           if (c.id === column) {
             if (!c.cards) {
@@ -304,35 +323,37 @@ export default function(state = { columns: [] }, action) {
             }
 
             c.cards.push({
-              id: id,
-              order: c.cards.length + 1
+              id,
+              order: c.cards.length + 1,
             });
           }
           return c;
-        })
+        }),
 
       };
     }
-    case "REMOVE_COLUMN": {
+    case constants.REMOVE_COLUMN: {
       const { id } = action.payload;
       return {
         ...state,
-        columns: state.columns.filter(column => column.id !== id)
+        columns: state.columns.filter((column: any) => column.id !== id),
       };
     }
-    case "OPEN_MODAL": {
+    case constants.OPEN_MODAL: {
       return {
         ...state,
-        modal: true
-      }
+        modal: true,
+      };
     }
-    case "CLOSE_MODAL": {
+    case constants.CLOSE_MODAL: {
       return {
         ...state,
-        modal: false
-      }
+        modal: false,
+      };
     }
     default:
       return state;
   }
-}
+};
+
+export default reducer;

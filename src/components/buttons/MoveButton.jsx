@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 function MoveButton(props) {
   const { direction } = props;
+
   let icon;
   switch (direction) {
     case "left":
@@ -28,10 +28,6 @@ function MoveButton(props) {
       <FontAwesomeIcon icon={icon}/>
     </button>
   )
-}
-
-MoveButton.propTypes = {
-  direction: PropTypes.string
 }
 
 export default MoveButton;
