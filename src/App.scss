@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Signika&display=swap');
+
+/* basic reset stuff */
+html, body {
+  font-family: "Roboto Mono";
+  background-image: url('/email-pattern.png');
+}
+
+body {
+  @apply bg-gray-100;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: "Signika";
+}
+
+.not-trello {
+  height: 100vh;
+}
+.board {
+  height: 100vh;
+  padding-top: 10vh;
+}
+.top-bar {
+  height: 10vh;
+}
+.column-wrapper {
+  min-width: 300px;
+}
+.modal {
+  transition: opacity 0.25s ease;
+}
+.card-title-input {
+  font-family: "Signika";
+}
