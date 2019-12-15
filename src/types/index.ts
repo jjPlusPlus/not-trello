@@ -1,4 +1,9 @@
 export interface AppState {
+    firebase: any;
+    local: LocalState;
+}
+
+export interface LocalState {
     columns: Column[];
     detail: object;
     modal: boolean;
