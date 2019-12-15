@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { newColumn } from "../actions";
 import { connect } from "react-redux";
 
-import { withRouter, useRouteMatch, useLocation, matchPath } from "react-router-dom";
+import { withRouter, useRouteMatch, useLocation, Link } from "react-router-dom";
 
 import { firebaseConnect } from "react-redux-firebase";
 
@@ -29,17 +29,27 @@ const TopBar = (props) => {
     props.history.push("/board/" + event.target.value);
   }, [props.history]);
 
+  const logout = useCallback(() => {
+    props.firebase.logout();
+  }, [props.firebase]);
+
+  const authIsEmpty = props.auth.isEmpty;
+  const authIsLoaded = props.auth.isLoaded;
+  const isAuth = authIsLoaded && !authIsEmpty;
+
   return (
     <div className="top-bar p-4 fixed w-full bg-purple-800 text-yellow-400 flex flex-row items-center shadow-2xl">
       <div className="flex-grow">
-        <h1 className="text-4xl">Not Trello</h1>
+        <Link to="/">
+          <h1 className="text-4xl">Not Trello</h1>
+        </Link>
       </div>
       
         {isBoard ? (
           <div className="flex flex-row">
             <div className="relative">
               <select 
-                className="block cursor-pointer appearance-none w-full bg-transparent border border-purple-400 text-lg text-purple-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-purple-700 focus:border-purple-200"
+                className="block cursor-pointer appearance-none w-full bg-transparent border border-yellow-400 text-lg text-yellow-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-purple-700 focus:border-purple-200"
                 value={boardId}
                 onChange={updateBoard}
               >
@@ -53,10 +63,15 @@ const TopBar = (props) => {
                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
               </div>
             </div>
-            <button className="border border-yellow-400 ml-2 py-2 px-4 rounded leading-tight" onClick={() => props.newColumn(props.location.pathname)}>ADD COLUMN</button>
+            <button className="border border-yellow-400 ml-2 mr-2 py-2 px-4 rounded leading-tight" onClick={() => props.newColumn(props.location.pathname)}>ADD COLUMN</button>
           </div>
         ) : (
-          <div></div>
+          null
+        )}
+        {isAuth ? (
+        <button className="border border-purple-400 text-purple-400 py-2 px-4 rounded leading-tight" onClick={() => logout()}>Sign Out</button>
+        ) : ( 
+          null 
         )}
         
         
@@ -74,6 +89,7 @@ export default compose(
     "boards",
   ]),
   connect((state) => ({
+    auth: state.firebase.auth,
     boards: state.firebase.data.boards,
   }), mapDispatchToProps), 
   withRouter
