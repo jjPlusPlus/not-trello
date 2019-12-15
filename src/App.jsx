@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import Board from "./components/Board";
 import ModalWrapper from "./components/ModalWrapper";
 import Home from "./components/pages/Home";
-import Test from "./components/Test";
 
 import CardDetail from "./components/CardDetail";
 import TopBar from "./components/TopBar";
@@ -33,7 +32,6 @@ const App = (props) => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/board/:id" component={Board} />
-            <Route path="/test/:id" component={Test} />
             <Redirect to="/" />
           </Switch>
         </div>
