@@ -3,6 +3,9 @@ import { Card, Column } from "../types";
 
 export interface NewColumn {
   type: constants.NEW_COLUMN;
+  payload: {
+    board: string;
+  };
 }
 export interface AddColumn {
   type: constants.ADD_COLUMN;
@@ -13,12 +16,15 @@ export interface AddColumn {
 export interface RemoveColumn {
   type: constants.REMOVE_COLUMN;
   payload: {
-    id: string;
+    boardId: string;
+    columnId: string;
+    name: string;
   };
 }
 export interface MoveColumn {
   type: constants.MOVE_COLUMN;
   payload: {
+    board: any;
     column: Column;
     direction: string;
   };
@@ -37,20 +43,21 @@ export type ColumnAction =
   | MoveColumn
   | UpdateColumn;
 
-export const newColumn = () => ({
+export const newColumn = (board: string) => ({
   type: "NEW_COLUMN",
+  payload: board,
 });
 export const addColumn = (name: string) => ({
   type: "ADD_COLUMN",
   payload: name,
 });
-export const removeColumn = (id: string) => ({
+export const removeColumn = (boardId: string, columnId: string, name: string) => ({
   type: "REMOVE_COLUMN",
-  payload: id,
+  payload: { boardId, columnId, name },
 });
-export const moveColumn = (column: Column, direction: string) => ({
+export const moveColumn = (board: any, column: Column, direction: string) => ({
   type: "MOVE_COLUMN",
-  payload: { column, direction },
+  payload: { board, column, direction },
 });
 export const updateColumn = (id: string, column: string) => ({
   type: "UPDATE_COLUMN",
