@@ -23,43 +23,41 @@ import { withRouter } from "react-router-dom";
 //   location;
 // }
 
-class Card extends Component {
+const Card = (props) => {
 
-  render() {
-    const { card } = this.props;
-    const board = this.props.location.pathname.replace("/board/", "");
+  const { card } = props;
+  const board = props.location.pathname.replace("/board/", "");
 
-    return (
-      <div className="my-2 bg-white rounded-sm shadow-md flex flex-row">
+  return (
+    <div className="my-2 bg-white rounded-sm shadow-md flex flex-row">
+      <MoveButton
+        direction="left"
+        extraClasses="p-1 border-r border-gray-300 text-gray-500 hover:bg-teal-100"
+        action={() => props.moveCardHorizontal(board, card, "left")}
+      />
+      <div className="flex flex-col min-w-0 w-full">
         <MoveButton
-          direction="left"
-          extraClasses="p-1 border-r border-gray-300 text-gray-500 hover:bg-teal-100"
-          action={() => this.props.moveCardHorizontal(board, card, "left")}
+          direction="up"
+          extraClasses="p-0 border-b border-gray-300 text-gray-500 hover:bg-teal-100"
+          action={() => props.moveCardVertical(board, card, "up")}
         />
-        <div className="flex flex-col min-w-0 w-full">
-          <MoveButton
-            direction="up"
-            extraClasses="p-0 border-b border-gray-300 text-gray-500 hover:bg-teal-100"
-            action={() => this.props.moveCardVertical(board, card, "up")}
-          />
-          <div className="p-1 hover:bg-teal-200" onClick={() => this.props.openCard(board, card.column, card)}>
-            <h3 className="text-lg">{card.name}</h3>
-            <p className="text-base truncate">{card.description}</p>
-          </div>
-          <MoveButton
-            direction="down"
-            extraClasses="p-0 border-t border-gray-300 text-gray-500 hover:bg-teal-100"
-            action={() => this.props.moveCardVertical(board, card, "down")}
-          />
+        <div className="p-1 hover:bg-teal-200" onClick={() => props.openCard(board, card.column, card)}>
+          <h3 className="text-lg">{card.name}</h3>
+          <p className="text-base truncate">{card.description}</p>
         </div>
         <MoveButton
-          direction="right"
-          extraClasses="p-1 border-l border-gray-300 text-gray-500 hover:bg-teal-100"
-          action={() => this.props.moveCardHorizontal(board, card, "right")}
+          direction="down"
+          extraClasses="p-0 border-t border-gray-300 text-gray-500 hover:bg-teal-100"
+          action={() => props.moveCardVertical(board, card, "down")}
         />
       </div>
-    );
-  }
+      <MoveButton
+        direction="right"
+        extraClasses="p-1 border-l border-gray-300 text-gray-500 hover:bg-teal-100"
+        action={() => props.moveCardHorizontal(board, card, "right")}
+      />
+    </div>
+  );
 }
 
 const mapDispatchToProps = (dispatch) => ({
