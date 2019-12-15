@@ -52,7 +52,6 @@ type Props = IStateProps & IDispatchProps & IOwnProps;
 
 const Board = (props: IStateProps) => {
 
-  // const boardId = props.match.params.id;
   let boardId = "";
   const location = useLocation().pathname;
   const keys: any = [];

@@ -18,7 +18,9 @@ import { moveColumn, newCard, removeColumn } from "../actions";
 
 import { Draggable } from "react-beautiful-dnd";
 
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
+
+import { pathToRegexp } from "path-to-regexp";
 
 import _ from "lodash";
 
@@ -40,7 +42,15 @@ const Column = (props: Props) => {
 
   const { column } = props;
   const cards = column.cards || {};
-  const boardId = props.location.pathname.replace("/board/", "");
+
+  let boardId = "";
+  const location = useLocation().pathname;
+  const keys: any = [];
+  const regex = pathToRegexp("/board/:id", keys);
+  const result = regex.exec(location) || [];
+  boardId = result[1];
+
+  if (!boardId) { return (<div>Board Error: Could not parse Board ID from the Route. </div>); }
 
   const cardKeys = Object.keys(cards);
   const convertedCards = cardKeys.map((c, index) => {

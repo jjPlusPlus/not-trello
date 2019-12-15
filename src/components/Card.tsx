@@ -10,7 +10,9 @@ import { moveCardHorizontal, moveCardVertical, openCard } from "../actions";
 
 import { AppState } from "../types";
 
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
+
+import { pathToRegexp } from "path-to-regexp";
 
 interface CardProps {
   card: any;
@@ -23,7 +25,14 @@ interface CardProps {
 const Card = (props: CardProps) => {
 
   const { card } = props;
-  const board = props.location.pathname.replace("/board/", "");
+  let board = "";
+  const location = useLocation().pathname;
+  const keys: any = [];
+  const regex = pathToRegexp("/board/:id", keys);
+  const result = regex.exec(location) || [];
+  board = result[1];
+
+  if (!board) { return (<div>Board Error: Could not parse Board ID from the Route. </div>); }
 
   return (
     <div className="my-2 bg-white rounded-sm shadow-md flex flex-row">
