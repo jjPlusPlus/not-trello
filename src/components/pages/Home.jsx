@@ -114,7 +114,7 @@ const Home = (props) => {
         <p>A note about open-sourcing project management</p>
         <p>A link to Github and a plug for hiring me.</p>
         <p>You can also view the project on &nbsp;
-          <a className="text-purple-600" href="https://www.github.com/jjplusplus/not-trello" target="_blank">
+          <a className="text-purple-600" href="https://www.github.com/jjplusplus/not-trello" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faGithub} /> Github
           </a>.
         </p>
