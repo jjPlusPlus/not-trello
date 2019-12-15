@@ -18,6 +18,10 @@ import ReactMarkdown from "react-markdown";
 
 import Moment from "react-moment";
 
+import { pathToRegexp } from "path-to-regexp";
+
+import { useLocation } from "react-router-dom";
+
 interface CardDetailProps {
   columns: any;
   detail: any;
@@ -47,11 +51,20 @@ class CardDetail extends Component<CardDetailProps, CardDetailState> {
 
   public render() {
     const { detail } = this.props;
- 
+
     // get the current board from the path
-    const boardId = this.props.location.pathname.replace("/board/", "");
+    let boardId = "";
+    const location = useLocation().pathname;
+    const keys: any = [];
+    const regex = pathToRegexp("/board/:id", keys);
+    const result = regex.exec(location) || [];
+    boardId = result[1];
+
+    if (!boardId) { return (<div>Board Error: Could not parse Board ID from the Route. </div>); }
+
     const boards = this.props.boards;
     const board = boards[boardId];
+
     if (!board) { return (<div className="card-detail">Error: Board not found</div>); }
 
     // get the current column from the board
@@ -72,8 +85,6 @@ class CardDetail extends Component<CardDetailProps, CardDetailState> {
         return entry;
       });
     }
-
-
 
     return (
       <div className="card-detail">
