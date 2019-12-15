@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 
 import SignInForm from "../firebase/SignInForm";
 
-import { firebaseConnect } from "react-redux-firebase";
+import { firebaseConnect, isEmpty, isLoaded } from "react-redux-firebase";
 
 import { connect } from "react-redux";
 
@@ -34,18 +34,31 @@ const Home = (props) => {
     return;
   }, [newBoardName, props.auth.email, props.firebase]);
 
+  const logout = useCallback(() => {
+    props.firebase.logout();
+  }, [props.firebase]);
+
+  const authIsEmpty = props.auth.isEmpty;
+  const authIsLoaded = props.auth.isLoaded;
+  const isAuth = authIsLoaded && !authIsEmpty;
+
   return (
     <div className="w-full h-full bg-white p-8">
+
       <header className="w-full bg-gray-300 p-4 flex flex-row flex-center">
         <h1 className="text-4xl flex flex-1">Not Trello</h1>
         <section className="flex flex-1 flex-col">
-          { props.firebase.auth ? (
-            <h1 className="text-4xl">Welcome, {props.profile.username} ! </h1>
+          { isAuth ? (
+            <div>
+              <h1 className="text-4xl">Welcome, {props.profile.username} ! </h1>
+              <button className="" onClick={() => logout()}>Sign Out</button>
+            </div>
           ) : (
             <SignInForm />
           )}
         </section>
       </header>
+
       <section className="p-4">
         <h2 className="text-3xl">Public Boards</h2>
         <p>A list of boards that have open Access Control. links to boards/:id</p>
@@ -55,43 +68,46 @@ const Home = (props) => {
           <li className="border p-2">Board with a link</li>
         </ul>
       </section>
-      <section className="p-4">
-        <h2 className="text-3xl">My Boards</h2>
-        <p>A list of boards that you are the owner of. links to boards/:id</p>
-        
-        { props.boards ? (
-          <ul>
-            {Object.keys(props.boards).map((board, index) => {
-              const b = props.boards[board];
-              return (
-                <li key={index} className="border p-2">
-                  <Link to={"/board/" + board}>
-                    {b.name} {b.lastupdated}
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-        ) : (
-          <div>
-            <p>You don't haz any boards yet.</p>
-          </div>
-        )}
 
-        {showNewBoardForm ? (
-          <div>
-            <label htmlFor="newBoardName">New Board Name:</label>
-            <input className="text-input" type="text" name="newBoardName" value={newBoardName} onChange={(e) => updateNewBoardName(e.target.value)} />
-            <button onClick={() => createBoard()}>Create</button>
-          </div>
-        ) : (
+      {isAuth ? (
+        <section className="p-4">
+          <h2 className="text-3xl">My Boards</h2>
+          <p>A list of boards that you are the owner of. links to boards/:id</p>
+          
+          { props.boards ? (
+            <ul>
+              {Object.keys(props.boards).map((board, index) => {
+                const b = props.boards[board];
+                return (
+                  <li key={index} className="border p-2">
+                    <Link to={"/board/" + board}>
+                      {b.name} {b.lastupdated}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : (
             <div>
-              <button onClick={() => toggleNewBoardForm(true)}>New Board</button>
+              <p>You don't haz any boards yet.</p>
             </div>
-          )
-        }
+          )}
 
-      </section>
+          {showNewBoardForm ? (
+            <div>
+              <label htmlFor="newBoardName">New Board Name:</label>
+              <input className="text-input" type="text" name="newBoardName" value={newBoardName} onChange={(e) => updateNewBoardName(e.target.value)} />
+              <button onClick={() => createBoard()}>Create</button>
+            </div>
+          ) : (
+              <div>
+                <button onClick={() => toggleNewBoardForm(true)}>New Board</button>
+              </div>
+            )
+          }
+        </section>
+      ) : null }
+
       <section className="p-4">
         <h2 className="text-3xl">About Not Trello</h2>
         <p>An image, and a blurb about how the project is basically Trello</p>
