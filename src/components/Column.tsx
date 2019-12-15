@@ -4,7 +4,7 @@ import Card from "./Card";
 
 import { AnyAction, Dispatch } from "redux";
 
-import { AppState } from "../types";
+import { AppState, Column } from "../types";
 
 import AddButton from "./buttons/AddButton";
 import MoveButton from "./buttons/MoveButton";
@@ -20,19 +20,23 @@ import { Draggable } from "react-beautiful-dnd";
 
 import { withRouter } from "react-router-dom";
 
-import _ from 'lodash';
+import _ from "lodash";
 
-// interface ColumnProps {
-//   column: any;
-//   key: any;
-//   moveColumn: any;
-//   removeColumn: any;
-//   newCard: any;
-//   children: any;
-//   cards: any;
-// }
+interface IStateProps {
+  column: any;
+  key: any;
+  children: any;
+  cards?: any;
+  location?: any;
+}
+interface IDispatchProps {
+  moveColumn?: (board: string, column: string, direction: string) => void | null;
+  newCard?: (column: string, board: string) => void | null;
+  removeColumn?: (board: string, column: string, title: string) => void | null;
+}
+type Props = IStateProps & IDispatchProps;
 
-const Column = (props) => {
+const Column = (props: Props) => {
 
   const { column } = props;
   const cards = column.cards || {};
@@ -44,16 +48,20 @@ const Column = (props) => {
     entry.id = c;
     return entry;
   });
-  
+
   const sortedCards = _.sortBy(convertedCards, "order");
 
   return (
     <div className="bg-gray-400">
       <header className="flex flex-row items-center text-white bg-black">
-        <MoveButton direction="left" extraClasses="p-2" action={() => props.moveColumn(boardId, column, "left")}/>
+        <MoveButton
+          direction="left"
+          extraClasses="p-2"
+          action={() => props.moveColumn ? props.moveColumn(boardId, column, "left") : () => {return; } }
+        />
         <h2 className="flex-1 p-2 text-lg">{column.title}</h2>
-        <RemoveButton action={() => props.removeColumn(boardId, column.id, column.title)}/>
-        <MoveButton direction="right" extraClasses="p-2" action={() => props.moveColumn(boardId, column, "right")}/>
+        <RemoveButton action={() => props.removeColumn ? props.removeColumn(boardId, column.id, column.title) : () => { return; } }/>
+        <MoveButton direction="right" extraClasses="p-2" action={() => props.moveColumn ? props.moveColumn(boardId, column, "right") : () => { return; } }/>
       </header>
 
       <div className="p-2">
@@ -70,35 +78,35 @@ const Column = (props) => {
                     </div>
                   )}
                 </Draggable>
-              )
+              );
             })
           : <div>
               <h3>No cards yet</h3>
             </div>
         }
-        <AddButton extraClasses="w-full" action={() => props.newCard(column.id, props.location.pathname)}/>
+        <AddButton extraClasses="w-full" action={() => props.newCard ? props.newCard(column.id, props.location.pathname) : () => { return; }}/>
       </div>
     </div>
-  )
-}
+  );
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  moveColumn: (board, column, direction) => dispatch(moveColumn(board, column, direction)),
-  newCard: (columnId, boardId) => dispatch(newCard(columnId, boardId)),
-  removeColumn: (board, column, name) => dispatch(removeColumn(board, column, name)),
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
+  moveColumn: (board: string, column: Column, direction: string) => dispatch(moveColumn(board, column, direction)),
+  newCard: (columnId: string, boardId: string) => dispatch(newCard(columnId, boardId)),
+  removeColumn: (board: string, column: string, name: string) => dispatch(removeColumn(board, column, name)),
 });
 
-const enhance = compose(
+const enhance = compose<Props, Props>(
   firebaseConnect(() => [
     "cards",
   ]),
   connect(
-    (state) => ({
+    (state: AppState) => ({
       cards: state.firebase.data.cards,
     }),
     mapDispatchToProps,
   ),
-  withRouter
+  withRouter,
 );
 
 export default enhance(Column);
