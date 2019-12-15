@@ -4,6 +4,8 @@ import Column from "./Column";
 
 import { firebaseConnect } from "react-redux-firebase";
 
+import { useLocation } from "react-router-dom";
+
 import { compose } from "recompose";
 
 import { connect } from "react-redux";
@@ -18,7 +20,7 @@ import { dropCard, IDragDrop } from "../actions";
 
 import _ from "lodash";
 
-// import { TestReduxState } from "../reducers";
+import { pathToRegexp } from "path-to-regexp";
 
 interface IDragResult {
   source: object;
@@ -50,16 +52,25 @@ type Props = IStateProps & IDispatchProps & IOwnProps;
 
 const Board = (props: IStateProps) => {
 
-  const boardId = props.match.params.id;
+  // const boardId = props.match.params.id;
+  let boardId = "";
+  const location = useLocation().pathname;
+  const keys: any = [];
+  const regex = pathToRegexp("/board/:id", keys);
+  const result = regex.exec(location) || [];
+  boardId = result[1];
+
+  if (!boardId) { return ( <div>Board Error: Could not parse Board ID from the Route. </div> ); }
+
   const boards = props.boards;
   const board = boards[boardId];
   board.columns = board.columns || {}; // null-safe the columns in case there are none
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) {
+  const onDragEnd = (dragResult: DropResult) => {
+    if (!dragResult.destination) {
       return;
     }
-    props.dropCard(result.draggableId, result.source, result.destination, boardId);
+    props.dropCard(dragResult.draggableId, dragResult.source, dragResult.destination, boardId);
   };
 
   const columnKeys = Object.keys(board.columns);
