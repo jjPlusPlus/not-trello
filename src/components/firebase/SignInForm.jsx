@@ -57,12 +57,12 @@ const SignInForm = (props) => {
       <h2 className="text-3xl">{ signIn ? "Sign up" : "Registration" } </h2>
       { signIn ? (
         <div>
-          <form onSubmit={() => authenticate()} className="flex flex-col">
+          <form onSubmit={(e) => authenticate(e)} className="flex flex-col">
             <label htmlFor="email">Email</label>
-            <input className="text-input" type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className="text-input" type="text" name="email" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)} />
 
             <label htmlFor="password">Password</label>
-            <input className="text-input" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input className="text-input" type="password" name="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)} />
 
             <div className="flex flex-row-reverse">
               <button type="submit" className="button submit-button float-right" disabled={!valid}>Submit</button>
