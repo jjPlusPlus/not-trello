@@ -17,9 +17,11 @@ h1,h2,h3,h4,h5,h6 {
 .not-trello {
   height: 100vh;
 }
-.board {
-  height: 100vh;
+.not-trello--content {
   padding-top: 10vh;
+}
+.board {
+  height: 90vh;
 }
 .top-bar {
   height: 10vh;
