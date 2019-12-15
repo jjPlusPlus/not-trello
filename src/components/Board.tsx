@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Column from "./Column";
 
@@ -82,7 +82,7 @@ const Board = (props: IStateProps) => {
   const sortedColumns = _.sortBy(convertedColumns, "order");
 
   return (
-    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+    <DragDropContext onDragEnd={(dragResult) => onDragEnd(dragResult)}>
       <div className="board flex flex-row flex-shrink-0 overflow-x-scroll overflow-y-visible flex-no-wrap">
         { sortedColumns
           ? sortedColumns.map((column: any, index: number) => {
@@ -113,7 +113,7 @@ const Board = (props: IStateProps) => {
       </div>
     </DragDropContext>
   );
-}
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
   dropCard: (cardId: string, source: IDragDrop, destination: IDragDrop, board: string) =>

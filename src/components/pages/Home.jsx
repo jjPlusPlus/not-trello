@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 
 import SignInForm from "../firebase/SignInForm";
 
-import { firebaseConnect, isEmpty, isLoaded } from "react-redux-firebase";
+import { firebaseConnect } from "react-redux-firebase";
 
 import { connect } from "react-redux";
 
