@@ -4,7 +4,7 @@ import Card from "./Card";
 
 import { AnyAction, Dispatch } from "redux";
 
-import { AppState, Column } from "../types";
+import { AppState } from "../types";
 
 import AddButton from "./buttons/AddButton";
 import MoveButton from "./buttons/MoveButton";
@@ -91,7 +91,7 @@ const Column = (props: Props) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
-  moveColumn: (board: string, column: Column, direction: string) => dispatch(moveColumn(board, column, direction)),
+  moveColumn: (board: string, column: any, direction: string) => dispatch(moveColumn(board, column, direction)),
   newCard: (columnId: string, boardId: string) => dispatch(newCard(columnId, boardId)),
   removeColumn: (board: string, column: string, name: string) => dispatch(removeColumn(board, column, name)),
 });

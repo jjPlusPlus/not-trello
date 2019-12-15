@@ -8,16 +8,16 @@ import { AnyAction, Dispatch } from "redux";
 
 import { moveCardHorizontal, moveCardVertical, openCard } from "../actions";
 
-import { AppState, Card, Column } from "../types";
+import { AppState } from "../types";
 
 import { withRouter } from "react-router-dom";
 
 interface CardProps {
-  card: Card;
+  card: any;
   location?: any;
   moveCardHorizontal?: (board: string, card: object, direction: string) => void;
   moveCardVertical?: (board: string, card: object, direction: string) => void;
-  openCard?: (board: string, column: string, card: Card) => void;
+  openCard?: (board: string, column: string, card: any) => void;
 }
 
 const Card = (props: CardProps) => {
@@ -58,8 +58,8 @@ const Card = (props: CardProps) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
-  moveCardHorizontal: (board: string, card: Card, direction: string) => dispatch(moveCardHorizontal(board, card, direction)),
-  moveCardVertical: (board: string, card: Card, direction: string) => dispatch(moveCardVertical(board, card, direction)),
+  moveCardHorizontal: (board: string, card: any, direction: string) => dispatch(moveCardHorizontal(board, card, direction)),
+  moveCardVertical: (board: string, card: any, direction: string) => dispatch(moveCardVertical(board, card, direction)),
   openCard: (board: string, column: string, card: string) => dispatch(openCard(board, column, card)),
 });
 
