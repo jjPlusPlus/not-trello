@@ -7,6 +7,7 @@ interface EditableFieldProps {
   extraClasses: any;
   extraInputClasses: any;
   field: any;
+  readOnly: any;
 }
 interface EditableFieldState {
   editing: boolean;
@@ -30,7 +31,7 @@ class EditableField extends Component<EditableFieldProps, EditableFieldState> {
     const InputType = `${this.props.inputType}`;
     return (
       <div>
-        { !this.state.editing ? (
+        { !this.state.editing || this.props.readOnly ? (
           <h3 className={this.props.extraClasses} onClick={() => this.setState({editing: !this.state.editing})}>
             {this.props.field}
           </h3>

@@ -1,9 +1,8 @@
-import { applyMiddleware, createStore  } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { logger } from "redux-logger";
 
-import { AppState } from "./types";
-
 import rootReducer from "./reducers";
+
 import rootSaga from "./sagas";
 
 import createSagaMiddleware from "redux-saga";
@@ -14,10 +13,10 @@ export default function configureStore() {
                          ? JSON.parse(localStorage.getItem("reduxState") || "{}")
                          : {columns: [], detail: null, modal: false};
 
-  const store = createStore<AppState, any, any, any>(
+  const store = createStore(
     rootReducer,
     persistedState,
-    applyMiddleware(logger, sagaMiddleware),
+    applyMiddleware(sagaMiddleware),
   );
 
   store.subscribe(() => {
