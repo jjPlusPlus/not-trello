@@ -16,7 +16,7 @@ export default function configureStore() {
   const store = createStore(
     rootReducer,
     persistedState,
-    applyMiddleware(logger, sagaMiddleware),
+    applyMiddleware(sagaMiddleware),
   );
 
   store.subscribe(() => {
