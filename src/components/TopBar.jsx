@@ -31,11 +31,16 @@ const TopBar = (props) => {
 
   const logout = useCallback(() => {
     props.firebase.logout();
-  }, [props.firebase]);
+    props.history.push("/")
+  }, [props.firebase, props.history]);
 
   const authIsEmpty = props.auth.isEmpty;
   const authIsLoaded = props.auth.isLoaded;
   const isAuth = authIsLoaded && !authIsEmpty;
+
+  const myBoards = props.boards ? Object.keys(props.boards).filter((b) => {
+    return props.boards[b].owner === props.auth.email;
+  }) : [];
 
   return (
     <div className="top-bar p-4 fixed w-full bg-purple-800 text-yellow-400 flex flex-row items-center shadow-2xl">
@@ -53,7 +58,7 @@ const TopBar = (props) => {
                 value={boardId}
                 onChange={updateBoard}
               >
-                {props.boards && Object.keys(props.boards).map((b, index) => {
+                {myBoards && myBoards.map((b) => {
                   return (
                     <option value={b}>{props.boards[b].name}</option>
                   );
