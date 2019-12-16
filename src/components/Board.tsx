@@ -4,7 +4,7 @@ import Column from "./Column";
 
 import { firebaseConnect } from "react-redux-firebase";
 
-import { useLocation } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 
 import { compose } from "recompose";
 
@@ -21,6 +21,7 @@ import { dropCard, IDragDrop } from "../actions";
 import _ from "lodash";
 
 import { pathToRegexp } from "path-to-regexp";
+import { auth } from "firebase";
 
 interface IDragResult {
   source: object;
@@ -38,6 +39,8 @@ interface IStateProps {
   columns: any;
   boards: any;
   match: any;
+  auth: any;
+  history: any;
   dropCard(id: string, source: object, destination: object, board: string): void;
 }
 interface IDispatchProps {
@@ -60,10 +63,14 @@ const Board = (props: IStateProps) => {
   boardId = result[1];
 
   if (!boardId) { return ( <div>Board Error: Could not parse Board ID from the Route. </div> ); }
-
   const boards = props.boards;
   const board = boards[boardId];
   board.columns = board.columns || {}; // null-safe the columns in case there are none
+
+  // Dum-dum route blocking for now.
+  if (board.owner !== props.auth.email) {
+    props.history.push("/");
+  }
 
   const onDragEnd = (dragResult: DropResult) => {
     if (!dragResult.destination) {
@@ -126,9 +133,11 @@ const enhance = compose<IStateProps, {}>(
   connect(
     (state: AppState) => ({
       boards: state.firebase.data.boards,
+      auth: state.firebase.auth,
     }),
     mapDispatchToProps,
   ),
+  withRouter,
 );
 
 export default enhance(Board);
