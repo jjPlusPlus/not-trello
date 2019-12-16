@@ -30,6 +30,7 @@ interface IStateProps {
   children: any;
   cards?: any;
   location?: any;
+  isReadOnly: boolean;
 }
 interface IDispatchProps {
   moveColumn?: (board: string, column: string, direction: string) => void | null;
@@ -64,14 +65,20 @@ const Column = (props: Props) => {
   return (
     <div className="bg-gray-400">
       <header className="flex flex-row items-center text-white bg-black">
-        <MoveButton
-          direction="left"
-          extraClasses="p-2"
-          action={() => props.moveColumn ? props.moveColumn(boardId, column, "left") : () => {return; } }
-        />
+        {!props.isReadOnly ?
+          <MoveButton
+            direction="left"
+            extraClasses="p-2"
+            action={() => props.moveColumn ? props.moveColumn(boardId, column, "left") : () => { return; }}
+          />
+        : null }
         <h2 className="flex-1 p-2 text-lg">{column.title}</h2>
-        <RemoveButton action={() => props.removeColumn ? props.removeColumn(boardId, column.id, column.title) : () => { return; } }/>
-        <MoveButton direction="right" extraClasses="p-2" action={() => props.moveColumn ? props.moveColumn(boardId, column, "right") : () => { return; } }/>
+        {!props.isReadOnly ?
+          <RemoveButton action={() => props.removeColumn ? props.removeColumn(boardId, column.id, column.title) : () => { return; }} /> 
+        : null }
+        {!props.isReadOnly ?
+          <MoveButton direction="right" extraClasses="p-2" action={() => props.moveColumn ? props.moveColumn(boardId, column, "right") : () => { return; }} />
+        : null }
       </header>
 
       <div className="p-2">
@@ -84,7 +91,7 @@ const Column = (props: Props) => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <Card key={index} card={card} />
+                      <Card key={index} card={card} isReadOnly={props.isReadOnly}/>
                     </div>
                   )}
                 </Draggable>
@@ -94,7 +101,9 @@ const Column = (props: Props) => {
               <h3>No cards yet</h3>
             </div>
         }
-        <AddButton extraClasses="w-full" action={() => props.newCard ? props.newCard(column.id, props.location.pathname) : () => { return; }}/>
+        { !props.isReadOnly ?
+          <AddButton extraClasses="w-full" action={() => props.newCard ? props.newCard(column.id, props.location.pathname) : () => { return; }} />
+        : null }
       </div>
     </div>
   );
@@ -113,6 +122,7 @@ const enhance = compose<Props, Props>(
   connect(
     (state: AppState) => ({
       cards: state.firebase.data.cards,
+      auth: state.firebase.auth,
     }),
     mapDispatchToProps,
   ),

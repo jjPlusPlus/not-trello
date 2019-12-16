@@ -30,6 +30,7 @@ interface CardDetailProps {
   boards: any;
   match: any;
   location: any;
+  auth: any;
 }
 interface CardDetailState {
   showPreview: boolean;
@@ -82,6 +83,8 @@ const CardDetail = (props: CardDetailProps) => {
     });
   }
 
+  const isReadOnly = props.auth.email !== board.owner;
+
   return (
     <div className="card-detail">
       <div className="flex flex-row">
@@ -93,9 +96,12 @@ const CardDetail = (props: CardDetailProps) => {
             field={card.name}
             extraClasses="text-2xl underline"
             extraInputClasses="text-2xl card-title-input"
+            readOnly={isReadOnly}
           />
         </div>
-        <RemoveButton action={() => props.removeCard(boardId, card.column, card.id, card.name)}/>
+        {!isReadOnly ? (
+          <RemoveButton action={() => props.removeCard(boardId, card.column, card.id, card.name)} />
+        ) : null }
       </div>
 
       <div className="w-full pt-4">
@@ -103,9 +109,11 @@ const CardDetail = (props: CardDetailProps) => {
           ? <div>
               <p className="text-gray-600 text-lg pb-2">
                 Description
-                <span className="px-2 underline text-teal-600" onClick={() => togglePreview(!showPreview)}>
-                  Edit
-                </span>
+                {!isReadOnly ? (
+                  <span className="px-2 underline text-teal-600" onClick={() => togglePreview(!showPreview)}>
+                    Edit
+                  </span>
+                ) : ( null )}
               </p>
               <ReactMarkdown className="w-full border rounded-sm p-2 border-gray-200" source={card.description}/>
             </div>
@@ -159,6 +167,7 @@ const enhance = compose<CardDetailProps, CardDetailProps>(
     (state: AppState) => ({
       detail: state.local.detail,
       boards: state.firebase.data.boards,
+      auth: state.firebase.auth,
     }),
     mapDispatchToProps,
   ),

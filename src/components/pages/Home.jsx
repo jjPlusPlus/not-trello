@@ -46,6 +46,13 @@ const Home = (props) => {
     return props.boards[b].owner === props.auth.email; 
   }) : [];
 
+  const publicBoards = props.boards ? Object.keys(props.boards).filter((b) => {
+    const boardObj = props.boards[b];
+    const isPublic = boardObj.public;
+    const notOwnedByMe = props.boards[b].owner !== props.auth.email;
+    return isPublic && notOwnedByMe;
+  }) : [];
+
   return (
     <div className="w-full h-full bg-white p-8">
 
@@ -66,18 +73,30 @@ const Home = (props) => {
       <section className="flex flex-row">
         <div className="w-1/2 p-4">
           <h2 className="text-3xl ">Public Boards</h2>
-          <p>A list of boards that have open Access Control. links to boards/:id</p>
-          <ul>
-            <li className="border p-2">BoardName + owner + lastupdated</li>
-            <li className="border p-2">Board with a link</li>
-            <li className="border p-2">Board with a link</li>
-          </ul>
+          <p>A list of boards that have Public Access turned on</p>
+          {props.boards && publicBoards.length ? (
+            <ul>
+              {publicBoards.map((board, index) => {
+                const b = props.boards[board];
+                return (
+                  <li key={index} className="border p-2">
+                    <Link to={"/board/" + board}>
+                      {b.name} {b.lastupdated}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : (
+            <div>
+              <p>There are no public boards available.</p>
+            </div>
+          )}
         </div>
         {isAuth ? (
           <div className="w-1/2 p-4">
             <h2 className="text-3xl">My Boards</h2>
-            <p>A list of boards that you are the owner of. links to boards/:id</p>
-
+            <p>Your Boards</p>
             {props.boards ? (
               <ul>
                 {myBoards.map((board, index) => {

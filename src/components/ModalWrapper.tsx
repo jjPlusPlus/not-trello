@@ -20,7 +20,7 @@ function ModalWrapper(props: ModalWrapperProps) {
         </div>
         <div className="modal-actions flex items-center justify-center pt-4 mt-4 border-t border-gray-300">
           {/*<button onClick={() => props.save()}>Save</button>*/}
-          <button 
+          <button
             className="rounded-sm bg-white px-4 py-2 border border-teal-300 text-teal-600 hover:bg-teal-100"
             onClick={() => props.closeModal()}
           >
@@ -29,12 +29,12 @@ function ModalWrapper(props: ModalWrapperProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
   // save: () => dispatch(saveCard()),
-  closeModal: () => dispatch(closeModal())
+  closeModal: () => dispatch(closeModal()),
 });
 
 export default connect(null, mapDispatchToProps)(ModalWrapper);

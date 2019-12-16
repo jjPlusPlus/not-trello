@@ -62,13 +62,14 @@ const Board = (props: IStateProps) => {
   const result = regex.exec(location) || [];
   boardId = result[1];
 
-  if (!boardId) { return ( <div>Board Error: Could not parse Board ID from the Route. </div> ); }
   const boards = props.boards;
+
+  if (!boardId || !boards) { return (<div>Board Error: Could not parse Board ID from the Route. </div>); }
   const board = boards[boardId];
   board.columns = board.columns || {}; // null-safe the columns in case there are none
 
   // Dum-dum route blocking for now.
-  if (board.owner !== props.auth.email) {
+  if (board.owner !== props.auth.email && !board.public) {
     props.history.push("/");
   }
 
@@ -87,6 +88,7 @@ const Board = (props: IStateProps) => {
   });
   const sortedColumns = _.sortBy(convertedColumns, "order");
 
+  const isReadOnly = props.auth.email !== board.owner;
   return (
     <DragDropContext onDragEnd={(dragResult) => onDragEnd(dragResult)}>
       <div className="board flex flex-row flex-shrink-0 overflow-x-scroll overflow-y-visible flex-no-wrap">
@@ -96,7 +98,7 @@ const Board = (props: IStateProps) => {
                 <Droppable key={index} droppableId={column.id}>
                   {(provided) => (
                     <div className="column-wrapper w-1/4 mx-2 mt-1 flex-shrink-0 flex-grow-0 overflow-y-scroll pb-10 pt-4" ref={provided.innerRef} {...provided.droppableProps}>
-                      <Column key={index} column={column}>
+                      <Column key={index} column={column} isReadOnly={isReadOnly}>
                         <div>
                           {provided.placeholder}
                         </div>
