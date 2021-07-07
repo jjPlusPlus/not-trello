@@ -21,7 +21,10 @@ import { dropCard, IDragDrop } from "../actions";
 import _ from "lodash";
 
 import { pathToRegexp } from "path-to-regexp";
+
 import { auth } from "firebase";
+
+
 
 interface IDragResult {
   source: object;
@@ -68,11 +71,6 @@ const Board = (props: IStateProps) => {
   const board = boards[boardId];
   board.columns = board.columns || {}; // null-safe the columns in case there are none
 
-  // Dum-dum route blocking for now.
-  if (board.owner !== props.auth.email && !board.public) {
-    props.history.push("/");
-  }
-
   const onDragEnd = (dragResult: DropResult) => {
     if (!dragResult.destination) {
       return;
@@ -88,7 +86,15 @@ const Board = (props: IStateProps) => {
   });
   const sortedColumns = _.sortBy(convertedColumns, "order");
 
-  const isReadOnly = props.auth.email !== board.owner;
+  const isOwner = props.auth.email === board.owner;
+  const isEditor = board.editors && Object.keys(board.editors).map(e => board.editors[e].email).includes(props.auth.email)
+  const isReadOnly = !isOwner && !isEditor;
+
+  // Dum-dum route blocking for now.
+  if (board.owner !== props.auth.email && !board.public && !isEditor) {
+    props.history.push("/");
+  }
+
   return (
     <DragDropContext onDragEnd={(dragResult) => onDragEnd(dragResult)}>
       <div className="board flex flex-row flex-shrink-0 overflow-x-scroll overflow-y-visible flex-no-wrap">
