@@ -29,7 +29,7 @@ const SignInForm = (props) => {
       email: email,
       password: password
     }
-    props.firebase.createUser(credentials, { username }).then(result => {
+    props.firebase.createUser(credentials, { username, email }).then(result => {
       // now the user should be logged in.
       // reroute the user?
     }).catch(error => {
@@ -54,39 +54,39 @@ const SignInForm = (props) => {
 
   return (
     <div className="sign-in-form">
-      <h2 className="text-3xl">{ signIn ? "Sign up" : "Registration" } </h2>
+      <h2 className="text-3xl">{ signIn ? "Sign In" : "Registration" } </h2>
       { signIn ? (
         <div>
           <form onSubmit={(e) => authenticate(e)} className="flex flex-col">
             <label htmlFor="email">Email</label>
-            <input className="text-input" type="text" name="email" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className="text-input mb-2" type="text" name="email" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)} />
 
             <label htmlFor="password">Password</label>
-            <input className="text-input" type="password" name="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input className="text-input mb-2" type="password" name="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-            <div className="flex flex-row-reverse">
-              <button type="submit" className="button submit-button float-right" disabled={!valid}>Submit</button>
+            <div className="flex flex-row-reverse py-2">
+              <button type="submit" className="button bg-black text-yellow-400 px-4 py-2 mx-auto text-center submit-button" style={{transform: "skew(-10deg)"}} disabled={!valid}>Submit</button>
             </div>
           </form>
-          <p onClick={() => toggleSignInFlow(false)}>Register</p>
+          <p className="text-purple-500 cursor-pointer text-center" onClick={() => toggleSignInFlow(false)}>Register</p>
         </div>
       ) : (
         <div>
           <form onSubmit={(e) => register(e)} className="flex flex-col">
             <label htmlFor="email">Email</label>
-            <input className="text-input" type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input className="text-input mb-2" type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
             <label htmlFor="email">UserName</label>
-            <input className="text-input" type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <input className="text-input mb-2" type="text" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
 
             <label htmlFor="password">Password</label>
-            <input className="text-input" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input className="text-input mb-2" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-            <div className="flex flex-row-reverse">
-              <button type="submit" className="button submit-button float-right" disabled={!valid}>Submit</button>
+            <div className="flex flex-row-reverse py-2">
+              <button type="submit" className="button bg-black text-yellow-400 px-4 py-2 mx-auto text-center submit-button" style={{transform: "skew(-10deg)"}} disabled={!valid}>Submit</button>
             </div>
           </form>
-          <p onClick={() => toggleSignInFlow(true)}>Sign In</p>
+          <p className="text-purple-500 cursor-pointer text-center" onClick={() => toggleSignInFlow(true)}>Sign In</p>
         </div>
       )}
       

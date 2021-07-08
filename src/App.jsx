@@ -10,19 +10,10 @@ import Home from "./components/pages/Home";
 import CardDetail from "./components/CardDetail";
 import TopBar from "./components/TopBar";
 
-// import { AppState } from "./types";
-
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-
-// interface DispatchProps {
-//   newColumn: () => void;
-//   modal: boolean;
-//   firebase: any;
-// }
 
 const App = (props) => {
 
-// const App: React.FunctionComponent<DispatchProps> = (props) => {
   return (
     <div className="not-trello">
       
